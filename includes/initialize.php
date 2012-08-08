@@ -29,6 +29,7 @@ require_once(LIB_PATH.DS.'log.php');
 
 // load database-related classes
 require_once(LIB_PATH.DS.'user.php');
+require_once(LIB_PATH.DS.'page.php');
 require_once(LIB_PATH.DS.'file_object.php');
 require_once(LIB_PATH.DS.'permission.php');
 require_once(LIB_PATH.DS.'comment.php');

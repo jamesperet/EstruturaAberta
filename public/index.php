@@ -79,10 +79,19 @@
       echo '<p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>';
       echo '</div>';
     } else {
-	  echo '<div class="hero-unit">';
-      echo '<h1>' . $_GET['file'] .'</h1>';
-      echo '<p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>';
-      echo '</div>';
+      $page = Page::find($_GET['file']);
+      if($page) {
+		  echo '<div class="hero-unit">';
+	      echo '<h1>' . $_GET['file'] .'</h1>';
+	      echo '<p>' . $page->content . '</p>';
+	      echo '</div>';
+	  } else {
+		  echo '<div class="hero-unit">';
+	      echo '<h1>' . $_GET['file'] .'</h1>';
+	      echo '<p>Está pagina não existe.</p>';
+	      echo '<p><a class="btn btn-primary btn-large">Criar Pagina</a></p>';
+	      echo '</div>';
+	  }
     }
     ?>
 
