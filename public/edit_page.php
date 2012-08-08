@@ -12,14 +12,8 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    
-    <?php
-    if(!$_GET['file']){
-      echo '<link href="css/bootstrap.css" rel="stylesheet">';
-    } else {
-	  echo '<link href="../css/bootstrap.css" rel="stylesheet">';
-    }
-    ?>
+    <link href="css/bootstrap.css" rel="stylesheet">
+
     
     
     <style type="text/css">
@@ -29,13 +23,7 @@
       }
     </style>
     
-    <?php
-    if(!$_GET['file']){
-      echo '<link href="css/bootstrap-responsive.css" rel="stylesheet">';
-    } else {
-	  echo '<link href="../css/bootstrap-responsive.css" rel="stylesheet">';
-    }
-    ?>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -80,7 +68,7 @@
 					<div class="control-group">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
-			              <input type="text" class="input-xlarge" id="input01">
+			              <input type="text" class="input-xlarge" id="input01" value="<?php echo $_GET['file'];?>">
 			            </div>
 			        </div>
 
