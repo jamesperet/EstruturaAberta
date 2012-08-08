@@ -16,5 +16,14 @@ class Page extends DatabaseObject {
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
+  
+  	public static function create_page($file, $content){
+		$new_page = new Page();
+		$new_page->name = $file;
+		$new_page->content = $content;
+		return $new_page->save();
+	}
 
 }
+
+?>
