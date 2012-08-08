@@ -12,14 +12,30 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    
+    <?php
+    if(!$_GET['file']){
+      echo '<link href="css/bootstrap.css" rel="stylesheet">';
+    } else {
+	  echo '<link href="../css/bootstrap.css" rel="stylesheet">';
+    }
+    ?>
+    
+    
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    
+    <?php
+    if(!$_GET['file']){
+      echo '<link href="css/bootstrap-responsive.css" rel="stylesheet">';
+    } else {
+	  echo '<link href="../css/bootstrap-responsive.css" rel="stylesheet">';
+    }
+    ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -55,12 +71,20 @@
 
     <div class="container">
 
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1><?php echo SYS_NAME . " " . CURRENT_VERSION;?></h1>
-        <p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>
-      </div>
 
+    <?php
+    if(!$_GET['file']){
+      echo '<div class="hero-unit">';
+      echo '<h1>' . SYS_NAME . " " . CURRENT_VERSION .'</h1>';
+      echo '<p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>';
+      echo '</div>';
+    } else {
+	  echo '<div class="hero-unit">';
+      echo '<h1>' . $_GET['file'] .'</h1>';
+      echo '<p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>';
+      echo '</div>';
+    }
+    ?>
 
 
       <hr>
