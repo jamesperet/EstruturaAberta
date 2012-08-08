@@ -1,0 +1,1 @@
+RewriteRule ([^/]+)*\.html   index.php?file=$1 [NC]

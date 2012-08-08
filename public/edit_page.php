@@ -61,21 +61,21 @@
 
     <div class="row">
     	<div class="span12">
-			<form class="well">
+			<form class="well" method="post" action="process.php?file=<?php echo $_GET['file'];?>">
 				<fieldset>
 					<legend>Editar página</legend>
 					
 					<div class="control-group">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
-			              <input type="text" class="input-xlarge" id="input01" value="<?php echo $_GET['file'];?>">
+			              <input type="text" name="name" class="input-xlarge" id="input01" value="<?php echo $_GET['file'];?>">
 			            </div>
 			        </div>
 
 					
 					<div class="control-group">
 						<label>Conteúdo</label>
-						<textarea class="" id="textarea" rows="12" style="width: 99%;"></textarea>
+						<textarea class="" id="textarea" name="content" rows="12" style="width: 99%;"></textarea>
 					</div>
 
 		
