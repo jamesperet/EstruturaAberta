@@ -6,7 +6,17 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>
+    	<?php 
+	    	if($_GET['file']){ 
+	    		echo $_GET['file'];
+	    		$root = 1;
+	    	} else {
+		    	echo SYS_NAME;
+		    	$root = 0;
+	    	}
+    	?>
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -59,11 +69,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Estrutura Aberta</a>
+          <a class="brand" href="index.php">Estrutura Aberta</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="index.php">Home</a></li>
             </ul>
+            <ul class="nav pull-right">
+			  <li class=""><a href="edit_page.php"><i class="icon-plus icon-white"></i></a></li>
+			  <?php
+			  echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '"><i class="icon-pencil icon-white"></i></a></li>';
+			  echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove icon-white"></i></a></li>';
+			  ?>
+			  
+			</ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -71,21 +89,26 @@
 
     <div class="container">
 
-
-    <?php
+    
+    <?php    
+    // Mostrar o conteúdo da página
     if(!$_GET['file']){
+      // Se não for especificada uma página, carregue as informações do sistema
       echo '<div class="hero-unit">';
       echo '<h1>' . SYS_NAME . " " . CURRENT_VERSION .'</h1>';
       echo '<p>Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.</p>';
       echo '</div>';
     } else {
+	  // Se uma página foi especificada
       $page = Page::find($_GET['file']);
       if($page) {
+      	  // Carregar a página do banco de dados
 		  echo '<div class="hero-unit">';
 	      echo '<h1>' . $_GET['file'] .'</h1>';
 	      echo '<p>' . $page->content . '</p>';
 	      echo '</div>';
 	  } else {
+	  	  // Mostrar página inexistente
 		  echo '<div class="hero-unit">';
 	      echo '<h1>' . $_GET['file'] .'</h1>';
 	      echo '<p>Está pagina não existe.</p>';
