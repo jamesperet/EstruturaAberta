@@ -47,7 +47,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php">Estrutura Aberta</a>
+          <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="index.php">Home</a></li>

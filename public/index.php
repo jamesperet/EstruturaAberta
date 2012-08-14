@@ -1,5 +1,12 @@
 <?php
 	require_once("../includes/initialize.php");
+		    
+    if(!$_GET['file']){ 
+		$settings = Setting::load();
+		// $page = Page::find($settings->initial_page);
+		$link = $settings->initial_page . '/';
+		redirect_to($link);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -70,10 +77,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php">Estrutura Aberta</a>
+          <a class="brand" href="../"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="index.php">Home</a></li>
+              <li class="active"><a href="../">Home</a></li>
             </ul>
             <ul class="nav pull-right">
 			  <?php

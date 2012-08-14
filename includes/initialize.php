@@ -26,6 +26,7 @@ require_once(LIB_PATH.DS.'session.php');
 require_once(LIB_PATH.DS.'database.php');
 require_once(LIB_PATH.DS.'database_object.php');
 require_once(LIB_PATH.DS.'log.php');
+require_once(LIB_PATH.DS.'setting.php');
 
 // load database-related classes
 require_once(LIB_PATH.DS.'user.php');
