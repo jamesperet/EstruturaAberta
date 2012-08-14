@@ -10,6 +10,7 @@
     	<?php 
 	    	if($_GET['file']){ 
 	    		echo $_GET['file'];
+	    		$page = Page::find($_GET['file']);
 	    		$root = 1;
 	    	} else {
 		    	echo SYS_NAME;
@@ -75,9 +76,9 @@
               <li class="active"><a href="index.php">Home</a></li>
             </ul>
             <ul class="nav pull-right">
-			  <li class=""><a href="edit_page.php"><i class="icon-plus icon-white"></i></a></li>
 			  <?php
-			  echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '"><i class="icon-pencil icon-white"></i></a></li>';
+			  echo '<li class=""><a href="../edit_page.php?action=create"><i class="icon-plus icon-white"></i></a></li>';
+			  echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '&action=edit""><i class="icon-pencil icon-white"></i></a></li>';
 			  echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove icon-white"></i></a></li>';
 			  ?>
 			  
@@ -100,7 +101,7 @@
       echo '</div>';
     } else {
 	  // Se uma página foi especificada
-      $page = Page::find($_GET['file']);
+      //$page = Page::find($_GET['file']);
       if($page) {
       	  // Carregar a página do banco de dados
 		  echo '<div class="hero-unit">';
@@ -112,7 +113,7 @@
 		  echo '<div class="hero-unit">';
 	      echo '<h1>' . $_GET['file'] .'</h1>';
 	      echo '<p>Está pagina não existe.</p>';
-	      echo '<p><a class="btn btn-primary btn-large" href="../edit_page.php?file=' . $_GET['file'] .'">Criar Pagina</a></p>';
+	      echo '<p><a class="btn btn-primary btn-large" href="../edit_page.php?file=' . $_GET['file'] .'&action=create">Criar Pagina</a></p>';
 	      echo '</div>';
 	  }
     }
