@@ -1,5 +1,9 @@
 <?php
 	require_once("../includes/initialize.php");
+	
+	if($_GET['file']){ 
+		$page = Page::find($_GET['file']);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +79,7 @@
 					
 					<div class="control-group">
 						<label>Conteúdo</label>
-						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"></textarea>
+						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"><?php echo $page->content;?></textarea>
 					</div>
 
 		
