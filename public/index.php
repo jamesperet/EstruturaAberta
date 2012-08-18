@@ -1,6 +1,8 @@
 <?php
 	require_once("../includes/initialize.php");
-		    
+	
+	if( $session->is_logged_in() ) { $user = User::find_by_id($_SESSION['user_id']); }
+	
     if(!$_GET['file']){ 
 		$settings = Setting::load();
 		// $page = Page::find($settings->initial_page);
@@ -84,11 +86,20 @@
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			  echo '<li class=""><a href="../edit_page.php?action=create"><i class="icon-plus icon-white"></i></a></li>';
-			  echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '&action=edit""><i class="icon-pencil icon-white"></i></a></li>';
-			  echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove icon-white"></i></a></li>';
+			  if($user) {
+			  	echo '<li class=""><a href="../edit_page.php?action=create"><i class="icon-plus icon-white"></i></a></li>';
+			  	echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '&action=edit""><i class="icon-pencil icon-white"></i></a></li>';
+			  	echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove icon-white"></i></a></li>';
+			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
+			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->username . ' <b class="caret"></b></a>';
+			    echo '<ul class="dropdown-menu">';
+			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
+			    echo '</ul></li>';
+			  } else {
+				  echo '<li class=""><a href="../login.php">Entrar</a></li>';
+			  }
+
 			  ?>
-			  
 			</ul>
           </div><!--/.nav-collapse -->
         </div>
