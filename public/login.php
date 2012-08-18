@@ -70,18 +70,19 @@
 			<form class="well form-horizontal" action="process.php?action=login" method="post">
 				<fieldset>
 					<legend>Entrar no sistema</legend>
-					<div class="control-group">
+					
+					<div class="control-group <?php if($_GET['error']==1){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Email</label>
 					  <div class="controls">
-					  	<input type="text" name="username" class="input-large" placeholder="">
-					  	<span class="help-inline"></span>
+					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['user']){ echo $_GET['user']; } ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'Usuário não cadastrado'; } ?></span>
 					  </div>
 					</div>
-					<div class="control-group">
+					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Senha</label>
 					  <div class="controls">
 					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"></span>
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'Senha incorreta'; } ?></span>
 					  </div>
 					</div>
 					<div class="form-actions">

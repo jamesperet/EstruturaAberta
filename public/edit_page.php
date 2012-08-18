@@ -1,6 +1,13 @@
 <?php
 	require_once("../includes/initialize.php");
 	
+	if( $session->is_logged_in() ) {
+		$user = User::find_by_id($_SESSION['user_id']);
+	} else {
+		$link = $_GET['file'] . '/'; 
+		redirect_to($link); 
+	}
+	
 	if($_GET['file']){ 
 		$page = Page::find($_GET['file']);
 	}
@@ -54,8 +61,24 @@
           <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="index.php">Home</a></li>
+              <li class=""><a href="pages.php">Páginas</a></li>
+              <li class=""><a href="users.php">Usuários</a></li>
             </ul>
+            <ul class="nav pull-right">
+			  <?php
+			  if($user) {
+			  	echo '</li><li class="dropdown">';
+			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->username . ' <b class="caret"></b></a>';
+			    echo '<ul class="dropdown-menu">';
+			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
+			    echo '</ul></li>';
+			  } else {
+			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
+				  echo '<li class=""><a href="login.php">Entrar</a></li>';
+			  }
+
+			  ?>
+			</ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -109,19 +132,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
 
   </body>
 </html>

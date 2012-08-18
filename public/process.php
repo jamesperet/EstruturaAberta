@@ -18,8 +18,13 @@
 			    redirect_to($start_page);
 			  } else {
 			    // username/password combo was not found in the database
-			    $message = '<div id="error">Login failed</div>';
-			    echo $message;
+			    $user = User::find_by_username($_POST['username']);
+			    if($user){
+			    	$link = 'login.php?error=2&user='.$user->username;
+			    } else {
+				    $link = 'login.php?error=1';
+			    }
+			    redirect_to($link);
 			  }
 			  
 			} else { // Form has not been submitted.

@@ -82,7 +82,8 @@
           <a class="brand" href="../"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="../">Home</a></li>
+              <li class=""><a href="../pages.php">Páginas</a></li>
+              <li class=""><a href="../users.php">Usuários</a></li>
             </ul>
             <ul class="nav pull-right">
 			  <?php
@@ -96,6 +97,7 @@
 			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
 			    echo '</ul></li>';
 			  } else {
+			  	  echo '<li class=""><a href="../signup.php">Cadastro</a></li>';
 				  echo '<li class=""><a href="../login.php">Entrar</a></li>';
 			  }
 
