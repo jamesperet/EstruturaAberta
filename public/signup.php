@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-	    Login no sistema
+	    Cadastro
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -66,8 +66,8 @@
 			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
 			    echo '</ul></li>';
 			  } else {
-			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class="active"><a href="login.php">Entrar</a></li>';
+			  	  echo '<li class="active"><a href="signup.php">Cadastro</a></li>';
+				  echo '<li class=""><a href="login.php">Entrar</a></li>';
 			  }
 
 			  ?>
@@ -80,27 +80,46 @@
     <div class="container">
 		<div class="row">
 		  <div class="span6 offset3">
-			<form class="well form-horizontal" action="process.php?action=login" method="post">
+			<form class="well form-horizontal" action="process.php?action=signup" method="post">
 				<fieldset>
-					<legend>Entrar no sistema</legend>
+					<legend>Cadastro no sistema</legend>
 					
-					<div class="control-group <?php if($_GET['error']==1){ echo 'error'; } ?>">
+					<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==4){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Email</label>
 					  <div class="controls">
-					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['user']){ echo $_GET['user']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'Usuário não cadastrado'; } ?></span>
+					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['username']){ echo $_GET['username']; } ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'forneça um email'; } if($_GET['error']==4){ echo 'Email já cadastrado'; } ?></span>
 					  </div>
 					</div>
-					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } ?>">
+					
+					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } if($_GET['error']==3 || $_GET['error']==4){ echo 'warning'; } ?>">
 					  <label class="control-label" for="input01">Senha</label>
 					  <div class="controls">
 					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'Senha incorreta'; } ?></span>
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'escreva uma senha'; } ?></span>
 					  </div>
 					</div>
+					
+					<div class="control-group <?php if($_GET['error']==3){ echo 'error'; } ?>">
+					  <label class="control-label" for="input01">Nome</label>
+					  <div class="controls">
+					  	<input type="text" name="firstname" class="input-large" placeholder="" value="<?php if($_GET['firstname']){ echo $_GET['firstname']; } ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==3){ echo 'escreva seu nome'; } ?></span>
+					  </div>
+					</div>
+					
+					<div class="control-group">
+					  <label class="control-label" for="input01">Sobrenome</label>
+					  <div class="controls">
+					  	<input type="text" name="lastname" class="input-large" placeholder="" value="<?php if($_GET['lastname']){ echo $_GET['lastname']; } ?>">
+					  	<span class="help-inline"></span>
+					  </div>
+					</div>
+					
 					<div class="form-actions">
-			            <button type="submit" class="btn btn-primary">Entrar</button>
+			            <button type="submit" class="btn btn-primary">Cadatrar-se</button>
 			        </div>
+			        
 				</fieldset>
 			</form>
 			

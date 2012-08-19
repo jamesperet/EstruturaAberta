@@ -29,55 +29,18 @@ class User extends DatabaseObject {
 	}
 
 	public function full_name() {
-    if(isset($this->first_name) && isset($this->last_name)) {
-      return $this->first_name . " " . $this->last_name;
-    } else {
-      return "";
-    }
-  } 
+    	if(isset($this->first_name) && isset($this->last_name)) {
+	    	return $this->first_name . " " . $this->last_name;
+	    } else {
+		    return "";
+		}
+	} 
 	
 	public function username() {
 		$user = User::find_by_id($_SESSION['user_id']);
 		return $user->username;
 	}
 	
-	public static function checkUser() {
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-		$firstname = $_POST['firstname'];	
-		$lastname = $_POST['lastname'];
-		$email = $_POST['email'];
-		// Test for blank inputs		
-		if($username == '') { echo 'blank-username-error'; return; }
-		if($password == '') { echo 'blank-password-error'; return; }
-		if($firstname == '') { echo 'blank-firstname-error'; return; }	
-		if($lastname == '') { echo 'blank-lastname-error'; return; }
-		if($email == '') { echo 'blank-email-error'; return; }
-		// Test for registered usernames				
-		global $database;
-		$username = $database->escape_value($username);
-		$password = $database->escape_value($password);
-		$email = $database->escape_value($email);
-		$sql1  = "SELECT * FROM users ";
-		$sql1 .= "WHERE username = '{$username}' ";
-		$sql1 .= "LIMIT 1";
-		$result_array = self::find_by_sql($sql1);
-		if(empty($result_array)){
-			// Test for resgistered emails
-			$sql2  = "SELECT * FROM users ";
-			$sql2 .= "WHERE user_email = '{$email}' ";
-			$sql2 .= "LIMIT 1";
-			$result_array2 = self::find_by_sql($sql2);
-			if(empty($result_array2)){
-				User::addUser($username, $password, $email, $firstname, $lastname);
-			} else {
-				echo 'invalid-email-error';
-			}
-		} else {
-			echo 'invalid-username-error';
-		}
-	}
-
 	public static function addUser($username, $password, $email, $firstname, $lastname) {
 		$new_user = New User();
 		$new_user->username = $username;
@@ -89,7 +52,6 @@ class User extends DatabaseObject {
 		$date = $dt->format('Y-m-d H:i:sP');
 		$new_user->registration_date = $date;
 		$new_user->save();
-		echo "Profile Created";
 	}
 	
 	public static function find_by_username($username="") {

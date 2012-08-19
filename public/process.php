@@ -37,6 +37,40 @@
 			$link = $_GET['file'] . '/';
     		redirect_to($link);
     		break;
+    	case "signup":
+			// Test for blank inputs		
+			if($_POST['username'] == '') { 
+				$link = 'signup.php?error=1&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}
+			if($_POST['password'] == '') { 
+				$link = 'signup.php?error=2&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}
+			if($_POST['firstname'] == '') { 
+				$link = 'signup.php?error=3&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}	
+			// Test for registered usernames
+			$user = User::find_by_username($_POST['username']);	
+			if(!$user){
+				User::addUser($_POST['username'], $_POST['password'], '', $_POST['firstname'], $_POST['lastname']);
+				$link = 'login.php';
+				$new_user = User::authenticate($_POST['username'], $_POST['password']);
+				if ($new_user) {
+			    	$session->login($new_user);
+			    	redirect_to($link);
+				}
+				break;
+			} else {
+				$link = 'signup.php?error=4&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}		
+    		break;
 		case "create":
 			// Create Page 
 			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content']);
