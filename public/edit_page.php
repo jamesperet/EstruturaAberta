@@ -70,7 +70,8 @@
 			  	echo '</li><li class="dropdown">';
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->username . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
+				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
+			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
 			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';

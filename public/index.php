@@ -92,9 +92,10 @@
 			  	echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '&action=edit""><i class="icon-pencil icon-white"></i></a></li>';
 			  	echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove icon-white"></i></a></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->username . ' <b class="caret"></b></a>';
+			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Logout</a></li>';
+			    echo '<li><a href="../user_settings.php">Minhas configurações</a></li>';
+			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
 			  	  echo '<li class=""><a href="../signup.php">Cadastro</a></li>';
