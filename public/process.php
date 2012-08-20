@@ -44,8 +44,18 @@
 				redirect_to($link);
 				break;
 			}
+			if(!checkEmail($_POST['username'])) { 
+				$link = 'signup.php?error=5&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}
 			if($_POST['password'] == '') { 
 				$link = 'signup.php?error=2&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;
+			}
+			if(strlen($_POST['password']) < 4) {
+				$link = 'signup.php?error=6&username='.$_POST['username'] . '&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
 				redirect_to($link);
 				break;
 			}

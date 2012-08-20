@@ -84,19 +84,19 @@
 				<fieldset>
 					<legend>Cadastro no sistema</legend>
 					
-					<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==4){ echo 'error'; } ?>">
+					<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==4 || $_GET['error']==5){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Email</label>
 					  <div class="controls">
 					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['username']){ echo $_GET['username']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'forneça um email'; } if($_GET['error']==4){ echo 'Email já cadastrado'; } ?></span>
+					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'forneça um email'; } if($_GET['error']==4){ echo 'Email já cadastrado'; } if($_GET['error']==5){ echo 'Email invalido'; } ?></span>
 					  </div>
 					</div>
 					
-					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } if($_GET['error']==3 || $_GET['error']==4){ echo 'warning'; } ?>">
+					<div class="control-group <?php if($_GET['error']==2 || $_GET['error']==6){ echo 'error'; } if($_GET['error']==3 || $_GET['error']==4 ){ echo 'warning'; } ?>">
 					  <label class="control-label" for="input01">Senha</label>
 					  <div class="controls">
 					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'escreva uma senha'; } ?></span>
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'escreva uma senha'; } if($_GET['error']==6){ echo 'minimo de 4 caracteres'; } ?></span>
 					  </div>
 					</div>
 					
