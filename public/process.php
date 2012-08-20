@@ -34,7 +34,11 @@
 			break;
 		case "logout": 
 			$session->logout();
-			$link = $_GET['file'] . '/';
+			if($_GET['file']){
+				$link = $_GET['file'] . '/';
+			} else {
+				$link = "index.php";
+			}
     		redirect_to($link);
     		break;
     	case "signup":
