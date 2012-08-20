@@ -1,8 +1,8 @@
 <?php
 	require_once("../includes/initialize.php");
 	
-	if( $session->is_logged_in() ) { redirect_to('index.php'); }
-
+	if( !$session->is_logged_in() ) { redirect_to('login.php'); }
+	$user = User::find_by_id($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-	    Cadastro
+	    Minhas configurações
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -63,7 +63,7 @@
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
-				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
+				echo '<li class="active"><a href="user_settings.php">Minhas configurações</a></li>';
 			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
@@ -81,44 +81,37 @@
     <div class="container">
 		<div class="row">
 		  <div class="span6 offset3">
-			<form class="well form-horizontal" action="process.php?action=signup" method="post">
+			<form class="well form-horizontal" action="process.php?action=update_user" method="post">
 				<fieldset>
-					<legend>Cadastro no sistema</legend>
+					<legend>Minhas configurações</legend>
+
 					
-					<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==4 || $_GET['error']==5){ echo 'error'; } ?>">
-					  <label class="control-label" for="input01">Email</label>
-					  <div class="controls">
-					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['username']){ echo $_GET['username']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'forneça um email'; } if($_GET['error']==4){ echo 'Email já cadastrado'; } if($_GET['error']==5){ echo 'Email invalido'; } ?></span>
-					  </div>
-					</div>
-					
-					<div class="control-group <?php if($_GET['error']==2 || $_GET['error']==6){ echo 'error'; } if($_GET['error']==3 || $_GET['error']==4 ){ echo 'warning'; } ?>">
-					  <label class="control-label" for="input01">Senha</label>
-					  <div class="controls">
-					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'escreva uma senha'; } if($_GET['error']==6){ echo 'minimo de 4 caracteres'; } ?></span>
-					  </div>
-					</div>
-					
-					<div class="control-group <?php if($_GET['error']==3){ echo 'error'; } ?>">
+					<div class="control-group <?php if($_GET['error']==1){ echo 'error';} ?>">
 					  <label class="control-label" for="input01">Nome</label>
 					  <div class="controls">
-					  	<input type="text" name="firstname" class="input-large" placeholder="" value="<?php if($_GET['firstname']){ echo $_GET['firstname']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==3){ echo 'escreva seu nome'; } ?></span>
+					  	<input type="text" name="firstname" class="input-large" placeholder="" value="<?php echo $user->first_name; ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'escreva seu nome'; } ?></span>
 					  </div>
 					</div>
 					
 					<div class="control-group">
 					  <label class="control-label" for="input01">Sobrenome</label>
 					  <div class="controls">
-					  	<input type="text" name="lastname" class="input-large" placeholder="" value="<?php if($_GET['lastname']){ echo $_GET['lastname']; } ?>">
+					  	<input type="text" name="lastname" class="input-large" placeholder="" value="<?php echo $user->last_name; ?>">
 					  	<span class="help-inline"></span>
 					  </div>
 					</div>
 					
+					<div class="control-group <?php if($_GET['error']==2){ echo 'error';} ?>">
+					  <label class="control-label" for="input01">Mudar senha</label>
+					  <div class="controls">
+					  	<input type="password" name="password" class="input-large" placeholder="">
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'minimo de 4 caracteres'; } ?></span>
+					  </div>
+					</div>
+					
 					<div class="form-actions">
-			            <button type="submit" class="btn btn-primary">Cadatrar-se</button>
+			            <button type="submit" class="btn btn-primary">Salvar</button>
 			        </div>
 			        
 				</fieldset>
@@ -140,19 +133,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
 
   </body>
 </html>

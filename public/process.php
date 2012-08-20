@@ -85,6 +85,27 @@
 				break;
 			}		
     		break;
+    	case "update_user":
+			$user = User::find_by_id($_SESSION['user_id']);
+			if($_POST['firstname'] != ''){
+				$user->first_name = $_POST['firstname'];
+			} else {
+				$link = 'user_settings.php?error=1&firstname=' . $user->first_name . '&lastname=' . $_POST['lastname'];
+				redirect_to($link);
+				break;	
+			}
+			$user->last_name = $_POST['lastname'];
+			if($_POST['password'] != ''){
+				if(strlen($_POST['password']) > 3) {
+					$user->password = $_POST['password'];
+				} else {
+					$link = 'user_settings.php?error=2&firstname=' . $_POST['firstname'] . '&lastname=' . $_POST['lastname'];
+					redirect_to($link);
+					break;	
+				}
+			}
+			$user->update();
+			redirect_to('user_settings.php');
 		case "create":
 			// Create Page 
 			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content']);
