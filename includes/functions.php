@@ -88,6 +88,12 @@ function getElapsedTime($eventTime)
     }
 }
 
+function timeNow(){
+	$dt = new DateTime("now");
+	$date = $dt->format('Y-m-d H:i:sP');
+	return $date;
+}
+
 function checkEmail($email) {
   // First, we check that there's one @ symbol, 
   // and that the lengths are right.
