@@ -5,7 +5,7 @@ require_once(LIB_PATH.DS.'database.php');
 class User extends DatabaseObject {
 	
 	protected static $table_name = "users";
-	protected static $db_fields = array('id', 'username', 'password', 'first_name', 'last_name', 'user_email', 'registration_date', 'bio', 'avatar');   
+	protected static $db_fields = array('id', 'username', 'password', 'first_name', 'last_name', 'user_email', 'registration_date', 'bio', 'avatar', 'user_type');   
 	public $id;
 	public $username;
 	public $password;
@@ -15,6 +15,7 @@ class User extends DatabaseObject {
 	public $registration_date;
 	public $bio;
 	public $avatar;
+	public $user_type;
 	
 	public static function authenticate($username="", $password="") {
 		global $database;
@@ -51,6 +52,7 @@ class User extends DatabaseObject {
 		$dt = new DateTime("now");
 		$date = $dt->format('Y-m-d H:i:sP');
 		$new_user->registration_date = $date;
+		$new_user->user_type = 'user';
 		$new_user->save();
 	}
 	

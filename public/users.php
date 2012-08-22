@@ -87,12 +87,15 @@
 				      <th>Nome</th>
 				      <th>Email</th>
 				      <th>Data de registro</th>
+				      <th>Tipo de usuário</th>
 				    </tr>
 				</thead>
 					<?php
 						$users = User::find_all();
 							foreach($users as $user) {
-								echo '<tr><td>' . $user->full_name() . '</td><td>' . $user->username .'</td><td>' . getElapsedTime($user->registration_date) .'</tr>';
+								if($user->user_type == 'admin') { $user_type = 'administrador'; }
+								if($user->user_type == 'user') { $user_type = 'usuário'; }
+								echo '<tr><td>' . $user->full_name() . '</td><td>' . $user->username .'</td><td>' . getElapsedTime($user->registration_date) .'</td><td>' . $user_type .'</td></tr>';
 							}
 					?>
 			    
