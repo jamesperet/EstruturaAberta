@@ -64,6 +64,7 @@
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
 				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
+				if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
 			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
