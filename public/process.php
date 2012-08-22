@@ -133,6 +133,19 @@
 			$link = $_GET['file'] . '/';
 			redirect_to($link);
 			break;
+		case "update_sys_info":
+			$settings = Setting::load();
+			if($_POST['initial_page'] == $settings->initial_page && $_POST['sys_name'] == $settings->sys_name){ redirect_to('system_settings.php'); }
+			if($_POST['initial_page'] != ''){
+				$settings->initial_page = $_POST['initial_page'];
+			} else {
+				$link = 'system_settings.php?error=1';
+				redirect_to($link);
+				break;	
+			}
+			$settings->sys_name = $_POST['sys_name'];
+			$settings->update();
+			redirect_to('system_settings.php?success=1');
 	}
 	
 	
