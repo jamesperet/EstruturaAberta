@@ -1,6 +1,7 @@
 <?php
 	require_once("../includes/initialize.php");
-	
+	require_once("../includes/markdown.php");
+		
 	if( $session->is_logged_in() ) { $user = User::find_by_id($_SESSION['user_id']); }
 	
     if(!$_GET['file']){ 
@@ -126,10 +127,9 @@
       //$page = Page::find($_GET['file']);
       if($page) {
       	  // Carregar a página do banco de dados
-		  echo '<div class="hero-unit">';
-	      echo '<h1>' . $_GET['file'] .'</h1>';
-	      echo '<p>' . $page->content . '</p>';
-	      echo '</div>';
+	      echo '<div class="row"><div class="span12">';
+	      echo markdown($page->content);
+	      echo '</div></div>';
 	  } else {
 	  	  // Mostrar página inexistente
 		  echo '<div class="hero-unit">';
