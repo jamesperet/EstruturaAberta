@@ -69,7 +69,7 @@
 			    echo '</ul></li>';
 			  } else {
 			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class="active"><a href="login.php">Entrar</a></li>';
+				  echo '<li class=""><a href="login.php">Entrar</a></li>';
 			  }
 
 			  ?>

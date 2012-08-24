@@ -110,7 +110,7 @@
 		
 					<div class="form-actions">
 		            	<button type="submit" class="btn btn-primary">Salvar</button>
-		            	<button class="btn">Cancelar</button>
+		            	<a class="btn" href="<?php if($_GET['file']) { echo $_GET['file'] . '/';} else { echo 'index.php';} ?>">Cancelar</a>
 		            </div>
 		            
 				</fieldset>
