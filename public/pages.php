@@ -54,7 +54,7 @@
           <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
+              <li class="active"><a href="pages.php">Páginas</a></li>
               <li class=""><a href="users.php">Usuários</a></li>
             </ul>
             <ul class="nav pull-right">

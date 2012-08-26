@@ -166,6 +166,7 @@
     <script src="../js/bootstrap-collapse.js"></script>
     <script src="../js/bootstrap-carousel.js"></script>
     <script src="../js/bootstrap-typeahead.js"></script>
+    <script src="../js/google-code-prettify/prettify.js"></script>
 
   </body>
 </html>
