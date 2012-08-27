@@ -59,8 +59,9 @@
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			  if($user) {
+			    echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
+			 if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
 				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';

@@ -146,6 +146,7 @@
 			$settings->sys_name = $_POST['sys_name'];
 			$settings->update();
 			redirect_to('system_settings.php?success=1');
+			break;
 	}
 	
 	

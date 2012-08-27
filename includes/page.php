@@ -28,6 +28,13 @@ class Page extends DatabaseObject {
 		return $new_page->save();
 	}
 
+	public static function search($query) {
+		$sql  = " SELECT * FROM `pages` WHERE `name` LIKE '%". $query . "%' OR `content` LIKE '%" . $query . "%'";
+		$result_array = self::find_by_sql($sql);
+		return static::find_by_sql($sql);
+	}
+
+
 }
 
 ?>

@@ -1,8 +1,8 @@
 <?php
 	require_once("../includes/initialize.php");
-	
-	if( $session->is_logged_in() ) { redirect_to('index.php'); }
-
+	if( $session->is_logged_in() ) {
+		$user = User::find_by_id($_SESSION['user_id']);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-	    Login no sistema
+	    Busca por <?php echo $_GET['query']; ?>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -54,7 +54,7 @@
           <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
+              <li class="active"><a href="pages.php">Páginas</a></li>
               <li class=""><a href="users.php">Usuários</a></li>
             </ul>
             <ul class="nav pull-right">
@@ -66,11 +66,12 @@
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
 				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
+				if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
 			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
 			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class="active"><a href="login.php">Entrar</a></li>';
+				  echo '<li class=""><a href="login.php">Entrar</a></li>';
 			  }
 
 			  ?>
@@ -82,32 +83,30 @@
 
     <div class="container">
 		<div class="row">
-		  <div class="span6 offset3">
-			<form class="well form-horizontal" action="process.php?action=login" method="post">
-				<fieldset>
-					<legend>Entrar no sistema</legend>
-					
-					<div class="control-group <?php if($_GET['error']==1){ echo 'error'; } ?>">
-					  <label class="control-label" for="input01">Email</label>
-					  <div class="controls">
-					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['user']){ echo $_GET['user']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'Usuário não cadastrado'; } ?></span>
-					  </div>
-					</div>
-					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } ?>">
-					  <label class="control-label" for="input01">Senha</label>
-					  <div class="controls">
-					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'Senha incorreta'; } ?></span>
-					  </div>
-					</div>
-					<div class="form-actions">
-			            <button type="submit" class="btn btn-primary">Entrar</button>
-			        </div>
-				</fieldset>
-			</form>
-			
-		  </div>
+			<div class="page-header">
+			  <h1>Buscando<small> "<?php echo $_GET['query']; ?>"</small></h1>
+			</div>
+
+			<table class="table table-bordered">
+			  <tbody>
+			    <thead>
+				    <tr>
+				      <th>Página</th>
+				      <th>Autor</th>
+				      <th>data</th>
+				    </tr>
+				</thead>
+					<?php
+						$pages = Page::search($_GET['query']);
+							foreach($pages as $page) {
+								$page_creator = User::find_by_id($page->creator_id);
+								echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $page_creator->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+							}
+					?>
+			    
+			  </tbody>
+			</table>
+
 		</div>
 
 
@@ -123,19 +122,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
 
   </body>
 </html>
