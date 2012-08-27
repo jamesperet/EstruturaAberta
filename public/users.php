@@ -60,7 +60,7 @@
             <ul class="nav pull-right">
 			  <?php
 			 
-			    echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			    echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
 			  if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
@@ -83,29 +83,34 @@
 
     <div class="container">
 		<div class="row">
-			<table class="table table-bordered">
-			  <tbody>
-			    <thead>
-				    <tr>
-				      <th>Nome</th>
-				      <th>Email</th>
-				      <th>Data de registro</th>
-				      <th>Tipo de usuário</th>
-				    </tr>
-				</thead>
-					<?php
-						$users = User::find_all();
-							foreach($users as $user) {
-								if($user->user_type == 'admin') { $user_type = 'administrador'; }
-								if($user->user_type == 'user') { $user_type = 'usuário'; }
-								echo '<tr><td>' . $user->full_name() . '</td><td>' . $user->username .'</td><td>' . getElapsedTime($user->registration_date) .'</td><td>' . $user_type .'</td></tr>';
-							}
-					?>
-			    
-			  </tbody>
-			</table>
-
+			<div class="span12">
+				<div class="page-header">
+				  <h1>Lista de usuários</h1>
+				</div>
+				<table class="table table-bordered">
+				  <tbody>
+				    <thead>
+					    <tr>
+					      <th>Nome</th>
+					      <th>Email</th>
+					      <th>Data de registro</th>
+					      <th>Tipo de usuário</th>
+					    </tr>
+					</thead>
+						<?php
+							$users = User::find_all();
+								foreach($users as $user) {
+									if($user->user_type == 'admin') { $user_type = 'administrador'; }
+									if($user->user_type == 'user') { $user_type = 'usuário'; }
+									echo '<tr><td>' . $user->full_name() . '</td><td>' . $user->username .'</td><td>' . getElapsedTime($user->registration_date) .'</td><td>' . $user_type .'</td></tr>';
+								}
+						?>
+				    
+				  </tbody>
+				</table>
+			</div>
 		</div>
+		
 
 
 

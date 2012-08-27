@@ -60,7 +60,7 @@
             <ul class="nav pull-right">
 			  <?php
 			  
-			  	echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			  	echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
 			 if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
@@ -83,26 +83,30 @@
 
     <div class="container">
 		<div class="row">
-			<table class="table table-bordered">
-			  <tbody>
-			    <thead>
-				    <tr>
-				      <th>Página</th>
-				      <th>Autor</th>
-				      <th>data</th>
-				    </tr>
-				</thead>
-					<?php
-						$pages = Page::find_all();
-							foreach($pages as $page) {
-							$user = User::find_by_id($page->creator_id);
-								echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
-							}
-					?>
-			    
-			  </tbody>
-			</table>
-
+			<div class="span12">
+				<div class="page-header">
+				  <h1>Lista de páginas</h1>
+				</div>
+				<table class="table table-bordered">
+				  <tbody>
+				    <thead>
+					    <tr>
+					      <th>Página</th>
+					      <th>Autor</th>
+					      <th>data</th>
+					    </tr>
+					</thead>
+						<?php
+							$pages = Page::find_all();
+								foreach($pages as $page) {
+								$user = User::find_by_id($page->creator_id);
+									echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+								}
+						?>
+				    
+				  </tbody>
+				</table>
+			</div>
 		</div>
 
 

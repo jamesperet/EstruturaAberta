@@ -60,7 +60,7 @@
             <ul class="nav pull-right">
 			  <?php
 			  
-			    echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			    echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
 			  if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
@@ -83,30 +83,31 @@
 
     <div class="container">
 		<div class="row">
-			<div class="page-header">
-			  <h1>Buscando<small> "<?php echo $_GET['query']; ?>"</small></h1>
+			<div class="span12">
+				<div class="page-header">
+				  <h1>Buscando<small> "<?php echo $_GET['query']; ?>"</small></h1>
+				</div>
+	
+				<table class="table table-bordered">
+				  <tbody>
+				    <thead>
+					    <tr>
+					      <th>Página</th>
+					      <th>Autor</th>
+					      <th>data</th>
+					    </tr>
+					</thead>
+						<?php
+							$pages = Page::search($_GET['query']);
+								foreach($pages as $page) {
+									$page_creator = User::find_by_id($page->creator_id);
+									echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $page_creator->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+								}
+						?>
+				    
+				  </tbody>
+				</table>
 			</div>
-
-			<table class="table table-bordered">
-			  <tbody>
-			    <thead>
-				    <tr>
-				      <th>Página</th>
-				      <th>Autor</th>
-				      <th>data</th>
-				    </tr>
-				</thead>
-					<?php
-						$pages = Page::search($_GET['query']);
-							foreach($pages as $page) {
-								$page_creator = User::find_by_id($page->creator_id);
-								echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $page_creator->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
-							}
-					?>
-			    
-			  </tbody>
-			</table>
-
 		</div>
 
 
