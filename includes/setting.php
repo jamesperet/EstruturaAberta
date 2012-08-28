@@ -17,6 +17,13 @@ class Setting extends DatabaseObject {
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
 
+  	public static function install($sys_name, $initial_page){
+		$settings = new Setting();
+		$settings->sys_name = $sys_name;
+		$settings->initial_page = $initial_page;
+		return $settings->save();
+	}
+
 }
 
 ?>
