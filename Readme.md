@@ -1,6 +1,6 @@
-# Estrutura Aberta
+# Estrutura Aberta v0.2
 
 
 ## Introdução
 
-Software Wiki moderno escrito em PHP e que utiliza o Twitter Bootstrap e a Monzey Framework. Por James Peret.
+Software Wiki minimalista com suporte para markdown. Escrito em PHP utilizando a Monzey Framework e o Twitter Bootstrap. Versão 0.2, criado por James Peret.
