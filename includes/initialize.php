@@ -39,5 +39,7 @@ if(!$config_handle){
 	// load database-related classes
 	require_once(LIB_PATH.DS.'user.php');
 	require_once(LIB_PATH.DS.'page.php');
+	require_once(LIB_PATH.DS.'tag.php');
+	require_once(LIB_PATH.DS.'ItemTag.php');
 }
 ?>
