@@ -149,6 +149,20 @@
       <hr>
 
       <footer>
+      	<div class="row">
+	      	<div class="span4">
+	      	<p>Tags: 
+	      		<?php
+	      			$page_tags = ItemTag::find($page->id, 'page');
+	      			foreach($page_tags as $item_tag){
+		      			$tag_name = Tag::find_by_id($item_tag->tag_id);
+		      			echo '<span class="badge">' . $tag_name->name . "</span> ";
+		      		}
+	      			
+	      		?>
+	      	</div>
+      	</div>
+      	<hr>
         <p>&copy; High Effects 2012</p>
       </footer>
 
