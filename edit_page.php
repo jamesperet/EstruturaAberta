@@ -106,7 +106,7 @@
 			        <div class="control-group">
 			            <label class="control-label" for="input01">Tags</label>
 			            <div class="controls">
-			              <input type="text" class="input-small tagManager" style="margin: 0 auto;" data-provide="typeahead"  data-items="4">
+			              <input type="text" class="input-small tagManager" style="margin: 0 auto;" data-provide="typeahead"  data-items="4"> 
 			            </div>
 			        </div>
 
