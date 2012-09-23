@@ -24,7 +24,7 @@
 
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
-
+    
     
     
     <style type="text/css">
@@ -102,6 +102,13 @@
 			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php echo $_GET['file'];?>">
 			            </div>
 			        </div>
+			        
+			        <div class="control-group">
+			            <label class="control-label" for="input01">Tags</label>
+			            <div class="controls">
+			              <input type="text" class="input-small tagManager" style="margin: 0 auto;" data-provide="typeahead"  data-items="4">
+			            </div>
+			        </div>
 
 					
 					<div class="control-group">
@@ -149,6 +156,41 @@
     <script src="js/bootstrap-collapse.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+    <script src="js/bootstrap-tagmanager.js"></script>
+    
+
+    
+    <script>
+    	$(document).ready(function() {
+    		 jQuery(".tagManager").tagsManager( { 
+    		 	
+    		 	prefilled: 
+    		 	[ 
+    		 		<?php
+						$page_tags = ItemTag::find($page->id, 'page');
+						foreach($page_tags as $item_tag){
+							$tag_name = Tag::find_by_id($item_tag->tag_id);
+							echo '"' . $tag_name->name . '", ';
+						}
+						
+					?>
+    		 	],
+    		 	preventSubmitOnEnter: true,
+    		 	typeahead: true,
+    		 	typeaheadSource: 
+    		 	[
+    		 		<?php
+						$page_tags = ItemTag::find_all();
+	              		foreach($page_tags as $item_tag){
+		              		$tag_name = Tag::find_by_id($item_tag->tag_id);
+		              		echo '"' . $tag_name->name . '", ';
+		              	}
+						
+					?>
+    		 	]
+    		 } )
+    	});
+    </script>
 
   </body>
 </html>
