@@ -12,7 +12,7 @@ class Setting extends DatabaseObject {
 
 	public static function load() {
 		$sql  = "SELECT * FROM " . self::$table_name;
-		$sql .= " WHERE id='1'";
+		//$sql .= " WHERE id='1'";
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
   }

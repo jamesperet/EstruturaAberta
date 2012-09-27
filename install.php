@@ -21,7 +21,7 @@
 					if ($db_select) {
 						$error = 5;
 					} else {
-						$myFile = "../includes/config.php";
+						$myFile = "includes/config.php";
 						$fh = fopen($myFile, 'w') or die("can't open file");
 						$stringData  = "<?php\n";
 						$stringData .= "   defined('SYS_NAME') ? null : define(\"SYS_NAME\", \"Estrutura Aberta\");\n";
@@ -32,47 +32,32 @@
 						$stringData .= "?>";
 						fwrite($fh, $stringData);
 						fclose($fh);
+						
 						$connection = mysql_connect('localhost', $_POST['username'], $_POST['password']);
+						
 						$sql = "CREATE DATABASE `" . $_POST['db_name'] . "`;";
 						mysql_query($sql, $connection);
 					
 						$db_select = mysql_select_db($_POST['db_name'], $connection);
 																
-						$sql  = "CREATE TABLE `pages` (";
-						$sql .= "  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,";
-						$sql .= "  `name` varchar(255) NOT NULL DEFAULT '',";
-						$sql .= "  `content` text,";
-						$sql .= "  `creator_id` int(11) NOT NULL,";
-						$sql .= "  `creation_date` datetime NOT NULL,";
-						$sql .= "  PRIMARY KEY (`id`)";
-						$sql .= "); ";
-						mysql_query($sql, $connection);
+						//$sql = implode ('', file ('includes/db.sql'));
 						
-						$sql  = "CREATE TABLE `settings` (";
-						$sql .= "  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,";
-						$sql .= "  `sys_name` varchar(255) NOT NULL DEFAULT '',";
-						$sql .= "  `initial_page` varchar(255) NOT NULL DEFAULT '',";
-						$sql .= "  PRIMARY KEY (`id`)";
-						$sql .= "); ";
-						mysql_query($sql, $connection);
+						$fp = file('includes/db.sql', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+						$query = '';
+						foreach ($fp as $line) {
+						    if ($line != '' && strpos($line, '--') === false) {
+						        $query .= $line;
+						        if (substr($query, -1) == ';') {
+						            mysql_query($query, $connection);
+						            $query = '';
+						        }
+						    }
+						}
 						
-						$sql  = "CREATE TABLE `users` (";
-						$sql .= "  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,";
-						$sql .= "  `username` varchar(50) NOT NULL,";
-						$sql .= "  `password` varchar(40) NOT NULL,";
-						$sql .= "  `first_name` varchar(30) NOT NULL,";
-						$sql .= "  `last_name` varchar(30) NOT NULL,";
-						$sql .= "  `user_email` varchar(60) NOT NULL,";
-						$sql .= "  `registration_date` datetime NOT NULL,";
-						$sql .= "  `bio` tinytext,";
-						$sql .= "  `avatar` varchar(128) DEFAULT NULL,";
-						$sql .= "  `user_type` varchar(16) NOT NULL DEFAULT '',";
-						$sql .= "  PRIMARY KEY (`id`)";
-						$sql .= "); ";
-						mysql_query($sql, $connection);
+						//mysql_query($sql, $connection);
 						mysql_close($connection);
 						
-						require_once("../includes/initialize.php");
+						require_once("includes/initialize.php");
 						Setting::install('Estrutura Aberta', 'home');
 						$index = 3;
 					}
@@ -84,7 +69,7 @@
 			if($_POST['initial_page'] == ""){$error = 5;}
 			if($_POST['sys_name']  == ""){$error = 4;}
 			if($_POST['sys_name'] != "" && $_POST['initial_page']){
-				require_once("../includes/initialize.php");
+				require_once("includes/initialize.php");
 				$settings = Setting::load();
 				$settings->sys_name = $_POST['sys_name'];
 				$settings->initial_page = $_POST['initial_page'];
@@ -93,7 +78,7 @@
 			}
 			break;
 		case "signup":
-			require_once("../includes/initialize.php");
+			require_once("includes/initialize.php");
 			// Test for blank inputs		
 			if($_POST['username'] == '') { 
 				$error = 6;
