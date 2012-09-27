@@ -11,11 +11,17 @@ class ItemTag extends DatabaseObject {
 	public $item_type;
 	public $tag_id;
 
-	public static function tag($item_id, $tag_id) {
-		$tag = new ItemTag();
-		$tag->item_id = $item_id;
-		$tag->tag_id = $tag_id;
-		$tag->save();
+	public static function tag($item_id, $tag_id, $item_type) {
+		$sql  = "SELECT * FROM " . static::$table_name . " WHERE `item_id`='" . $item_id . "' AND `item_type`='" . $item_type . "' AND `tag_id`='" . $tag_id . "'";
+		$result_array = self::find_by_sql($sql);
+		$tag = static::find_by_sql($sql);
+		if(!$tag){
+			$tag = new ItemTag();
+			$tag->item_id = $item_id;
+			$tag->tag_id = $tag_id;
+			$tag->item_type = $item_type;
+			$tag->save();
+		}
 	}
 	
 	public static function find($item_id, $item_type) {

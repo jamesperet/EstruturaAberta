@@ -14,5 +14,12 @@ class Tag extends DatabaseObject {
 		$tag->name = $name;
 		$tag->save();
 	}
+	
+	public static function find($tag) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE name='". $tag . "'";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
 
 }

@@ -124,6 +124,15 @@
 				$page = Page::create_page($_POST['page_name'], $_POST['page_content']);
 				$link = $_POST['page_name'] . '/';
 			}
+			$tags = explode( ',', $_POST['hiddenTagList']);
+			foreach($tags as $tag){
+				$dbTag = Tag::find($tag);
+				if(!$dbTag){
+					$dbTag = Tag::new_tag($tag);
+					$dbTag = Tag::find($tag);
+				}
+				ItemTag::tag($page->id, $dbTag->id, 'page');
+			}
 			redirect_to($link);
 			break;
 		case "delete":
