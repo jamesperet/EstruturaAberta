@@ -156,7 +156,7 @@
 	      			$page_tags = ItemTag::find($page->id, 'page');
 	      			foreach($page_tags as $item_tag){
 		      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-		      			echo '<span class="badge">' . $tag_name->name . "</span> ";
+		      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="badge">' . $tag_name->name . "</span></a> ";
 		      		}
 	      			
 	      		?>

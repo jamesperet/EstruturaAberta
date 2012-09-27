@@ -85,7 +85,14 @@
 		<div class="row">
 			<div class="span12">
 				<div class="page-header">
-				  <h1>Lista de páginas</h1>
+				  <?php
+				  	if($_GET['tag']){
+				  		echo '<h1>' . $_GET['tag'] . ' <small>Páginas taggeadas</small></h1>';
+				  	} else {
+					  	echo '<h1>Lista de páginas</h1>';
+				  	}
+				  ?>
+				  
 				</div>
 				<table class="table table-bordered">
 				  <tbody>
@@ -99,8 +106,15 @@
 						<?php
 							$pages = Page::find_all();
 								foreach($pages as $page) {
-								$user = User::find_by_id($page->creator_id);
-									echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+									$user = User::find_by_id($page->creator_id);
+									if($_GET['tag']){
+										$tag = Tag::find($_GET['tag']);
+										if(ItemTag::find_object_tag($page->id, $tag->id, 'page')){
+											echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+										}
+									} else {
+										echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+									}
 								}
 						?>
 				    
