@@ -10,9 +10,11 @@ class Tag extends DatabaseObject {
 	public $name;
 
 	public static function new_tag($name) {
-		$tag = new Tag();
-		$tag->name = $name;
-		$tag->save();
+		if($name){
+			$tag = new Tag();
+			$tag->name = $name;
+			$tag->save();
+		}
 	}
 	
 	public static function find($tag) {

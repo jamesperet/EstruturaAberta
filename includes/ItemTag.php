@@ -15,7 +15,7 @@ class ItemTag extends DatabaseObject {
 		$sql  = "SELECT * FROM " . static::$table_name . " WHERE `item_id`='" . $item_id . "' AND `item_type`='" . $item_type . "' AND `tag_id`='" . $tag_id . "'";
 		$result_array = self::find_by_sql($sql);
 		$tag = static::find_by_sql($sql);
-		if(!$tag){
+		if(!$tag && $tag_id != 0){
 			$tag = new ItemTag();
 			$tag->item_id = $item_id;
 			$tag->tag_id = $tag_id;

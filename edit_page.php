@@ -180,10 +180,9 @@
     		 	typeaheadSource: 
     		 	[
     		 		<?php
-						$page_tags = ItemTag::find_all();
-	              		foreach($page_tags as $item_tag){
-		              		$tag_name = Tag::find_by_id($item_tag->tag_id);
-		              		echo '"' . $tag_name->name . '", ';
+						$all_tags = Tag::find_all();
+	              		foreach($all_tags as $item_tag){
+		              		echo '"' . $item_tag->name . '", ';
 		              	}
 						
 					?>

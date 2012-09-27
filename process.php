@@ -115,6 +115,7 @@
 		case "edit":
 			// Edit page
 			$page = Page::find($_GET['file']);
+			$page_tags = ItemTag::find($page->id, 'page');
 			if($page){
 				$page->name = $_POST['page_name'];
 				$page->content = $_POST['page_content'];
@@ -125,13 +126,21 @@
 				$link = $_POST['page_name'] . '/';
 			}
 			$tags = explode( ',', $_POST['hiddenTagList']);
-			foreach($tags as $tag){
-				$dbTag = Tag::find($tag);
-				if(!$dbTag){
-					$dbTag = Tag::new_tag($tag);
+			if($tags){
+				foreach($tags as $tag){
 					$dbTag = Tag::find($tag);
+					if(!$dbTag){
+						$dbTag = Tag::new_tag($tag);
+						$dbTag = Tag::find($tag);
+					}
+					ItemTag::tag($page->id, $dbTag->id, 'page');
 				}
-				ItemTag::tag($page->id, $dbTag->id, 'page');
+				foreach($page_tags as $item_tag){
+					$tag_name = Tag::find_by_id($item_tag->tag_id);
+					if(!in_array($tag_name->name, $tags)){
+						$item_tag->delete();
+					}
+				}
 			}
 			redirect_to($link);
 			break;
