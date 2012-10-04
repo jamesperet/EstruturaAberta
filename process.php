@@ -25,6 +25,7 @@
 				    $link = 'login.php?error=1';
 			    }
 			    redirect_to($link);
+			    break;
 			  }
 			  
 			} else { // Form has not been submitted.

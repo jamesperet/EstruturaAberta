@@ -1,5 +1,5 @@
 <?php
-	require_once("includes/initialize.php");
+	//require_once("includes/initialize.php");
 	
 	if( !$session->is_logged_in() ) { redirect_to('login.php'); }
 	$user = User::find_by_id($_SESSION['user_id']);
@@ -20,17 +20,18 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    
-    <link href="css/bootstrap.css" rel="stylesheet">
-    
+    <?php
+	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+    ?>
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
-    
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <?php
+      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+    ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -135,19 +136,22 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap-transition.js"></script>
-    <script src="js/bootstrap-alert.js"></script>
-    <script src="js/bootstrap-modal.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
-    <script src="js/bootstrap-scrollspy.js"></script>
-    <script src="js/bootstrap-tab.js"></script>
-    <script src="js/bootstrap-tooltip.js"></script>
-    <script src="js/bootstrap-popover.js"></script>
-    <script src="js/bootstrap-button.js"></script>
-    <script src="js/bootstrap-collapse.js"></script>
-    <script src="js/bootstrap-carousel.js"></script>
-    <script src="js/bootstrap-typeahead.js"></script>
+    <?php
+      echo '<script src="themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+    ?>
 
   </body>
 </html>

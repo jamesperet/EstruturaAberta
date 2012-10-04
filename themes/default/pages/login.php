@@ -1,5 +1,5 @@
 <?php
-	require_once("includes/initialize.php");
+	//require_once("includes/initialize.php");
 	
 	if( $session->is_logged_in() ) { redirect_to('index.php'); }
 
@@ -10,24 +10,26 @@
   <head>
     <meta charset="utf-8">
     <title>
-	    Cadastro
+	    Login no sistema
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <!-- Le styles -->
-    
-    <link href="css/bootstrap.css" rel="stylesheet">
-    
+    <?php
+	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+    ?>
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
+    <?php
+      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+    ?>
     
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -59,17 +61,18 @@
             </ul>
             <ul class="nav pull-right">
 			  <?php
+			  
 			    echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			 if($user) {
+			  if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
 				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
 			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
-			  	  echo '<li class="active"><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="login.php">Entrar</a></li>';
+			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
+				  echo '<li class="active"><a href="login.php">Entrar</a></li>';
 			  }
 
 			  ?>
@@ -82,46 +85,27 @@
     <div class="container">
 		<div class="row">
 		  <div class="span6 offset3">
-			<form class="well form-horizontal" action="process.php?action=signup" method="post">
+			<form class="well form-horizontal" action="process.php?action=login" method="post">
 				<fieldset>
-					<legend>Cadastro no sistema</legend>
+					<legend>Entrar no sistema</legend>
 					
-					<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==4 || $_GET['error']==5){ echo 'error'; } ?>">
+					<div class="control-group <?php if($_GET['error']==1){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Email</label>
 					  <div class="controls">
-					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['username']){ echo $_GET['username']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'forneça um email'; } if($_GET['error']==4){ echo 'Email já cadastrado'; } if($_GET['error']==5){ echo 'Email invalido'; } ?></span>
+					  	<input type="text" name="username" class="input-large" placeholder="" value="<?php if($_GET['user']){ echo $_GET['user']; } ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'Usuário não cadastrado'; } ?></span>
 					  </div>
 					</div>
-					
-					<div class="control-group <?php if($_GET['error']==2 || $_GET['error']==6){ echo 'error'; } if($_GET['error']==3 || $_GET['error']==4 ){ echo 'warning'; } ?>">
+					<div class="control-group <?php if($_GET['error']==2){ echo 'error'; } ?>">
 					  <label class="control-label" for="input01">Senha</label>
 					  <div class="controls">
 					  	<input type="password" name="password" class="input-large" placeholder="">
-					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'escreva uma senha'; } if($_GET['error']==6){ echo 'minimo de 4 caracteres'; } ?></span>
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'Senha incorreta'; } ?></span>
 					  </div>
 					</div>
-					
-					<div class="control-group <?php if($_GET['error']==3){ echo 'error'; } ?>">
-					  <label class="control-label" for="input01">Nome</label>
-					  <div class="controls">
-					  	<input type="text" name="firstname" class="input-large" placeholder="" value="<?php if($_GET['firstname']){ echo $_GET['firstname']; } ?>">
-					  	<span class="help-inline"><?php if($_GET['error']==3){ echo 'escreva seu nome'; } ?></span>
-					  </div>
-					</div>
-					
-					<div class="control-group">
-					  <label class="control-label" for="input01">Sobrenome</label>
-					  <div class="controls">
-					  	<input type="text" name="lastname" class="input-large" placeholder="" value="<?php if($_GET['lastname']){ echo $_GET['lastname']; } ?>">
-					  	<span class="help-inline"></span>
-					  </div>
-					</div>
-					
 					<div class="form-actions">
-			            <button type="submit" class="btn btn-primary">Cadatrar-se</button>
+			            <button type="submit" class="btn btn-primary">Entrar</button>
 			        </div>
-			        
 				</fieldset>
 			</form>
 			
@@ -141,19 +125,22 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
-
+    <?php
+      echo '<script src="themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+    ?>
+    
   </body>
 </html>
