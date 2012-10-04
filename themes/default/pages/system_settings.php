@@ -113,6 +113,35 @@
 					  </div>
 					</div>
 					
+					<div class="control-group">
+					  <label class="control-label" for="input01">Tema</label>
+					  <div class="controls">
+					  	<select name="theme">
+					  		<?php
+					  			echo '<option>' . $settings->theme . '</option>';
+					  			//path to directory to scan
+								$directory = "themes/";
+								 
+								//get all files in specified directory
+								$files = glob($directory . "*");
+								 
+								//print each file name
+								foreach($files as $file)
+								{
+								 $theme = explode("themes/",$file);
+								 //check to see if the file is a folder/directory
+								 if(is_dir($file) && $theme[1] != $settings->theme)
+								 {
+								  
+								  
+								  echo '<option>' . $theme[1] . '</option>';
+								 }
+								}
+							?>
+					  	</select>
+					  </div>
+					</div>
+										
 					<div class="form-actions">
 			            <button type="submit" class="btn btn-primary">Salvar</button>
 			        </div>
