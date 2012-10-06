@@ -69,6 +69,7 @@ CREATE TABLE `settings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sys_name` varchar(512) NOT NULL DEFAULT '',
   `initial_page` varchar(512) NOT NULL DEFAULT '',
+  `theme` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
