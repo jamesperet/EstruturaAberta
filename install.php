@@ -5,6 +5,8 @@
 	else if($_GET['index'] == 4){ $index = 4; }
 	else if($_GET['index'] == 5){ $index = 5; }
 	else if($_GET['index'] == 6){ $index = 6; }
+	else if($_GET['index'] == 6){ $index = 6; }
+	else if($_GET['index'] == 7){ $index = 7; }
 	else { $index = 1; }
 
 	switch($_GET['action']){
@@ -33,35 +35,70 @@
 				}
 			}
 			break;
+		case db_install_type:
+			switch($_POST['db_options']){
+				case 1:
+					$db_option = 1;
+					$index = 4;				
+					break;					
+				case 2:
+					$db_option = 2;
+					$index = 4;
+					break;
+			}
+			break;
 		case db_install:
 			require_once("includes/config.php");
-			$connection = mysql_connect(DB_SERVER, DB_USER, DB_PASS);
-			
-			$sql = "CREATE DATABASE `" . DB_NAME . "`;";
-			mysql_query($sql, $connection);
-		
-			$db_select = mysql_select_db(DB_NAME, $connection);
-													
-			//$sql = implode ('', file ('includes/db.sql'));
-			
-			$fp = file('includes/db.sql', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-			$query = '';
-			foreach ($fp as $line) {
-			    if ($line != '' && strpos($line, '--') === false) {
-			        $query .= $line;
-			        if (substr($query, -1) == ';') {
-			            mysql_query($query, $connection);
-			            $query = '';
-			        }
-			    }
+			if($_FILES['uploadedfile']){
+				$target_path = basename( $_FILES['uploadedfile']['name']);
+				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){
+					$new_path = rename($target_path, "new_db.sql");
+					$target_path = $new_path;
+					//$fp = file($target_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+					$connection = mysql_connect(DB_SERVER, DB_USER, DB_PASS);				
+					$sql = "CREATE DATABASE `" . DB_NAME . "`;";
+					mysql_query($sql, $connection);
+					$mysqlImportFilename = getcwd() . '/new_db.sql';
+					$mysqlDumpPath = '/Applications/MAMP/Library/bin/';			
+					$command = $mysqlDumpPath.'mysql -h ' . DB_SERVER . ' -u ' . DB_USER .' -p' . DB_PASS .' ' . DB_NAME .' < ' .$mysqlImportFilename;	
+					exec($command,$output=array(),$worked);
+					switch($worked){
+					    case 0:
+					        //echo 'Import file <b>' .$mysqlImportFilename .'</b> successfully imported to database <b>' .DB_NAME .'</b>';
+					        break;
+					    case 1:
+					        //echo 'There was an error during import. Please make sure the import file is saved in the same folder as this script and check your values:<br/><br/><table><tr><td>MySQL Database Name:</td><td><b>' .DB_NAME .'</b></td></tr><tr><td>MySQL User Name:</td><td><b>' .DB_USER .'</b></td></tr><tr><td>MySQL Password:</td><td><b>NOTSHOWN</b></td></tr><tr><td>MySQL Host Name:</td><td><b>' .DB_SERVER .'</b></td></tr><tr><td>MySQL Import Filename:</td><td><b>' .$mysqlImportFilename .'</b></td></tr></table>';
+					        break;
+					}
+					unlink('new_db.sql');
+					$index = 7;
+					break;						
+				} 
+			} else {
+				$fp = file('includes/db.sql', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+				$connection = mysql_connect(DB_SERVER, DB_USER, DB_PASS);				
+				$sql = "CREATE DATABASE `" . DB_NAME . "`;";
+				mysql_query($sql, $connection);
+				
+				$db_select = mysql_select_db(DB_NAME, $connection);
+															
+				//$sql = implode ('', file ('includes/db.sql'));
+				$query = '';
+				foreach ($fp as $line) {
+				    if ($line != '' && strpos($line, '--') === false) {
+				        $query .= $line;
+				        if (substr($query, -1) == ';') {
+				            mysql_query($query, $connection);
+				            $query = '';
+				        }
+				    }
+				}
+				mysql_close($connection);
+				require_once("includes/initialize.php");
+				Setting::install('Estrutura Aberta', 'home');				
+				$index = 5;				
+				break;		
 			}
-			
-			//mysql_query($sql, $connection);
-			mysql_close($connection);
-			
-			require_once("includes/initialize.php");
-			Setting::install('Estrutura Aberta', 'home');
-			$index = 4;				
 			break;
 		case sys_settings:
 			if($_POST['initial_page'] == ""){$error = 5;}
@@ -73,7 +110,7 @@
 				$settings->initial_page = $_POST['initial_page'];
 				$settings->theme = 'default';
 				$settings->update();
-				$index = 5;
+				$index = 6;
 			}
 			break;
 		case "signup":
@@ -106,7 +143,7 @@
 			    $user = User::find_by_id($_SESSION['user_id']);
 			    $user->user_type = 'admin';
 			    $user->update();
-			    $index = 6;
+			    $index = 7;
 			    break;
 			} else {
 				$error = 11;
@@ -163,12 +200,12 @@
 		  		switch($index) {
 		  		// Introdução
 		  		case 1:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">1/5</small></h1></div>';
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">1/7</small></h1></div>';
 					echo '	<div class="progress progress-success progress-striped">';
 					echo '	  <div class="bar" style="width: 0%"></div>';
 					echo '    </div>';
 
-					echo '		<p class="lead">Bem vindo ao <a href="http://github/jamesperet/EstruturaAberta">Estrutura Aberta</a> versão 0.2, criado por <a href="http://www.jamesperet.com">James Peret</a>. Nos proximos passos você será guiado pela instalação do software.';
+					echo '		<p class="lead">Bem vindo ao <a href="http://github/jamesperet/EstruturaAberta">Estrutura Aberta</a> versão 0.3, criado por <a href="http://www.jamesperet.com">James Peret</a>. Nos proximos passos você será guiado pela instalação do software.';
 
 					echo '	<div class="modal-footer">';
 					echo '		<a class="btn" href="install.php?index=2">Proximo passo</a>';
@@ -176,7 +213,7 @@
 					break;
 				// Credencias do Banco de dados
 				case 2:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">2/5</small></h1></div>';
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">2/7</small></h1></div>';
 					echo '<form class="form-horizontal" action="install.php?action=install&index=2" method="post">';
 					echo '	<div class="progress progress-success progress-striped">';
 					echo '	  <div class="bar" style="width: 10%"></div>';
@@ -224,38 +261,65 @@
 					break;
 		  		// Instalação do Banco de dados
 		  		case 3:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">2/5</small></h1></div>';
-					echo '<form class="form-horizontal" action="install.php?action=db_install&index=4" method="post">';
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">3/7</small></h1></div>';
+					echo '<form class="form-horizontal" action="install.php?action=db_install_type&index=4" method="post">';
 					echo '	<div class="progress progress-success progress-striped">';
 					echo '	  <div class="bar" style="width: 25%"></div>';
 					echo '    </div>';
 					echo '	<fieldset>';
-					echo '		<legend>Seleção do Banco de dados MySQL</legend>';
 					require_once("includes/config.php");
 					$connection = mysql_connect(DB_SERVER, DB_USER, DB_PASS);
 					$db_select = mysql_select_db(DB_NAME, $connection);
 					mysql_close($connection);
 					if ($db_select) {
-						echo '<p>O banco de dados <i>'. DB_NAME . '</i> já existe.<br> Você tem certeza que quer usa-lo?</p>';
+						echo '<legend>Seleção do Banco de dados MySQL</legend>';
+						echo '<p>O banco de dados <b>'. DB_NAME . '</b> já existe.<br> Você tem certeza que quer usa-lo?</p>';
 						echo '	<div class="modal-footer">';
 						echo '		<a class="btn" href="install.php?index=2">Não</a>';
-						echo '		<a class="btn btn-success" href="install.php?index=6">Sim</a>';
+						echo '		<a class="btn btn-success" href="install.php?index=7">Sim</a>';
 						echo '	</div>';
 					} else {
-						echo '<p>Criar um novo banco de dados com o nome <i>'. DB_NAME . '</i>?</p>';
+						echo '<legend>Instalação do Banco de dados <b>'. DB_NAME . '</b></legend>';
+						//echo '<p>O banco de dados <i>'. DB_NAME . '</i>  não existe.</p>';
+						echo '<label class="radio"><input type="radio" name="db_options" id="optionsRadios1" value="1" checked>Criar novo banco de dados</label>';
+						echo '<label class="radio"><input type="radio" name="db_options" id="optionsRadios2" value="2">Usar arquivo de backup</label>';
 						echo '	<div class="modal-footer">';
-						echo '		<a class="btn" href="install.php?index=2">Não</a>';
-						echo '		<button class="btn btn-success">Sim</button>';
+						echo '		<a class="btn" href="install.php?index=2">voltar</a>';
+						echo '		<button class="btn btn-success">Proximo</button>';
 						echo '	</div>';						
 					}
 
 					break;
-				// Configurações do sistema
+				// Escolha de arquivo de backup e confirmação de instalação
 				case 4:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">3/5</small></h1></div>';
+					require_once("includes/config.php");
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">4/7</small></h1></div>';
+					echo '<form class="form-horizontal" enctype="multipart/form-data" action="install.php?action=db_install&index=5" method="post">';
+					echo '	<div class="progress progress-success progress-striped">';
+					echo '	  <div class="bar" style="width: 40%"></div>';
+					echo '    </div>';
+					echo '	<fieldset>';
+					if($db_option == 1){
+						echo '<legend>Seleção do Banco de dados MySQL</legend>';
+						echo '<p>O novo banco de dados <b>'. DB_NAME . '</b> vai ser criado.<br>Prosseguir?</p>';
+					}	
+					if($db_option == 2){
+						echo '<legend>Restaurar backup</legend>';
+						echo 'Escolha o arquivo <code>.sql</code> de backup para ser instalado:<br>';
+						echo '<input style="margin-bottom: 15px;" name="uploadedfile" type="file"  />';
+					}									
+					echo '	<div class="modal-footer">';
+					echo '		<a class="btn" href="install.php?index=3">voltar</a>';
+					echo '		<button type="submit" class="btn btn-success">Instalar</button>';
+					echo '	</div>';
+					echo '</form>';					
+					break;
+				// Configurações do sistema
+				case 5:
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">5/7</small></h1></div>';
 					echo '<form class="form-horizontal" action="install.php?action=sys_settings&index=3" method="post">';
 					echo '	<div class="progress progress-success progress-striped">';
-					echo '	  <div class="bar" style="width: 50%"></div>';
+					echo '	  <div class="bar" style="width: 60%"></div>';
 					echo '    </div>';
 					echo '	<fieldset>';
 					echo '		<legend>Informações do site</legend>';	
@@ -280,11 +344,11 @@
 					echo '</form>';
 					break;
 				// Cadastro do administrador
-				case 5:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">4/5</small></h1></div>';
+				case 6:
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">6/7</small></h1></div>';
 					echo '<form class="form-horizontal" action="install.php?action=signup&index=4" method="post">';
 					echo '	<div class="progress progress-success progress-striped">';
-					echo '	  <div class="bar" style="width: 75%"></div>';
+					echo '	  <div class="bar" style="width: 80%"></div>';
 					echo '    </div>';
 					echo '	<fieldset>';
 					echo '		<legend>Cadastro do administrador</legend>';	
@@ -324,8 +388,8 @@
 					echo '</form>';
 					break;
 				// Fim da instalação
-				case 6:
-		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">5/5</small></h1></div>';
+				case 7:
+		  			echo '<div class="page-header"><h1>Instalação<small class="pull-right"style="margin-top:10px;">7/7</small></h1></div>';
 					echo '	<div class="progress progress-success progress-striped">';
 					echo '	  <div class="bar" style="width: 100%"></div>';
 					echo '    </div>';
