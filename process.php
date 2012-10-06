@@ -166,6 +166,48 @@
 			$settings->update();
 			redirect_to('system_settings.php?success=1');
 			break;
+		case "export_db":
+			$mysqlDatabaseName = DB_NAME;
+			$mysqlUserName = DB_USER;
+			$mysqlPassword = DB_PASS;
+			$mysqlHostName = DB_SERVER;
+			if($_POST['name']){
+				if(!preg_match('/\s/',$_POST['name']) && !strpos($_POST['name'], '/') && !strpos($_POST['name'], '.')){
+				$file_name = $_POST['name'];
+				} else {
+					redirect_to('system_settings.php?error=46');
+					break;
+				}
+			} else {
+				$file_name = 'db_backup.sql';
+			}
+			$mysqlExportPath = SITE_ROOT . DS . $file_name;
+			$mysqlDumpPath = '/Applications/MAMP/Library/bin/';			
+			$command = $mysqlDumpPath . 'mysqldump --opt -h ' . $mysqlHostName . ' -u ' .$mysqlUserName .' -p' .$mysqlPassword .' ' .$mysqlDatabaseName .' > ' .$mysqlExportPath;	
+			exec($command,$output=array(),$worked);
+			switch($worked){
+			    case 0:
+			        header("Cache-Control: public");
+					header("Content-Description: File Transfer");
+					header("Content-Length: ". filesize("$mysqlExportPath").";");
+					header("Content-Disposition: attachment; filename=$file_name");
+					header("Content-Type: text/sql"); 
+					$fp = file($mysqlExportPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+					readfile($mysqlExportPath);
+					unlink($mysqlExportPath);
+					redirect_to('system_settings.php?success=2');
+			        break;
+			    case 1:
+			        //echo 'There was a warning during the export of <b>' .$mysqlDatabaseName .'</b> to <b>~/' .$mysqlExportPath .'</b>';
+			        redirect_to('system_settings.php?error=47');
+			        break;
+			    case 2:
+			        echo 'There was an error during export. Please check your values:<br/>';
+			        redirect_to('system_settings.php?error=48');
+			        break;
+			}
+			redirect_to('system_settings.php?error=49');
+			break;
 	}
 	
 	

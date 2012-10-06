@@ -151,7 +151,35 @@
 			
 		  </div>
 		</div>
-
+		
+		<div class="row">
+			<div class="span6 offset3">
+				<?php
+		  		if($_GET['success'] == 2){ 
+		  			echo '<div class="alert alert-success"><a class="close" data-dismiss="alert">×</a><strong>Backup do banco de dados salvo. </strong></div>';
+		  		}				
+			 		if($_GET['error'] == 47){ 
+				  		echo '<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Erro ao exportar banco de dados. Favor checar configurações.</strong></div>';
+				  	}
+				?>
+				<form class="well form-horizontal" action="process.php?action=export_db" method="post">
+					<fieldset>
+						<legend>Backup do Banco de dados</legend>
+						<div class="control-group <?php if($_GET['error']==46){ echo 'error';} ?>">
+						  <label class="control-label" for="input01">Nome do backup</label>
+						  <div class="controls">
+						  	<input type="text" name="name" class="input-large" placeholder="" value="">
+						  	<span class="help-block"><?php if($_GET['error']==46){ echo 'Nome de arquivo invalido. Favor não utilizar espaços, pontos ou barras.'; } ?></span>
+						  </div>
+						</div>
+						<div class="form-actions">
+				            <button type="submit" class="btn btn-primary">Salvar</button>
+				        </div>
+				    </fieldset>
+				</form>
+		    </div>
+		</div>				    
+				
 
 
       <hr>
