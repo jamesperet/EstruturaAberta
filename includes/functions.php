@@ -127,7 +127,11 @@ function checkEmail($email) {
 }
 
 function sendMail($to, $from, $subject, $message) {
-	$headers = 'From: ' . $from . "\r\n" . 'Reply-To: '. $from . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+	$headers  = 'From: ' . $from . "\r\n";
+	$headers .= 'Reply-To: '. $from . "\r\n";
+	$headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 	mail($to, $subject, $message, $headers);
 }
 
