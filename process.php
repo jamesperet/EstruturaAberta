@@ -77,6 +77,8 @@
 				$new_user = User::authenticate($_POST['username'], $_POST['password']);
 				if ($new_user) {
 			    	$session->login($new_user);
+			    	$message = MailTemplate('welcome.php');
+			    	sendMail($new_user->username, 'teste@gmail.com', 'Welcome', $message);
 			    	redirect_to($link);
 				}
 				break;

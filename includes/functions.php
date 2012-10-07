@@ -106,10 +106,7 @@ function checkEmail($email) {
   $email_array = explode("@", $email);
   $local_array = explode(".", $email_array[0]);
   for ($i = 0; $i < sizeof($local_array); $i++) {
-    if
-(!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&
-↪'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$",
-$local_array[$i])) {
+    if(!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&↪'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
       return false;
     }
   }
@@ -121,14 +118,29 @@ $local_array[$i])) {
         return false; // Not enough parts to domain
     }
     for ($i = 0; $i < sizeof($domain_array); $i++) {
-      if
-(!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|
-↪([A-Za-z0-9]+))$",
-$domain_array[$i])) {
+      if(!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|↪([A-Za-z0-9]+))$", $domain_array[$i])) {
         return false;
       }
     }
   }
   return true;
 }
+
+function sendMail($to, $from, $subject, $message) {
+	$headers = 'From: ' . $from . "\r\n" . 'Reply-To: '. $from . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+	mail($to, $subject, $message, $headers);
+}
+
+function MailTemplate($template){
+	$settings = Setting::load();
+	$template_link = 'themes/' . $settings->theme . '/emails/' . $template;
+	ob_start();
+	include_once($template_link);
+	$message = ob_get_contents();
+	ob_end_clean();
+	return $message;
+}
+
+
+
 ?>
