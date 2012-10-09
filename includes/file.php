@@ -17,7 +17,7 @@ class File extends DatabaseObject {
 	public $visibility;
 	
 	public static function add_file($name, $file_type, $object_id=0, $parent_id, $visibility){
-		$file = new FileObject();
+		$file = new File();
 		$file->name = $name;
 		$file->file_type = $file_type;
 		$file->object_id = $object_id;
@@ -48,10 +48,10 @@ class File extends DatabaseObject {
   	}
 
 	public static function delete_folder_contents($file_id) {
-		$folder_contents = FileObject::find_folder_files($file_id);
+		$folder_contents = File::find_folder_files($file_id);
 		if($folder_contents){
 			foreach($folder_contents as $file) {
-				FileObject::delete_folder_contents($file->id);
+				File::delete_folder_contents($file->id);
 				$file->delete();
 			}
 		}
@@ -72,5 +72,5 @@ class File extends DatabaseObject {
 				return $object_array;
 			}
 		}
-
+	
 }

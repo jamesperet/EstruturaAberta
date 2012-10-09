@@ -215,7 +215,9 @@
 				$target_path = basename( $_FILES['uploadedfile']['name']);
 				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){
 					rename($target_path, 'uploads/' . $target_path);
-					redirect_to('uploads/' . $target_path);
+					$new_file = File::add_file($_FILES['uploadedfile']['name'], 'image', 0, 'public');
+					$link = 'media.php?file=' . $new_file;
+					redirect_to($link);
 				}
 			}
 			break;
