@@ -35,10 +35,11 @@ if(!$config_handle){
 	require_once(LIB_PATH.DS.'database.php');
 	require_once(LIB_PATH.DS.'database_object.php');
 	require_once(LIB_PATH.DS.'setting.php');
-	
-	// load database-related classes
 	require_once(LIB_PATH.DS.'user.php');
+	
+	// load database-related classes	
 	require_once(LIB_PATH.DS.'page.php');
+	require_once(LIB_PATH.DS.'file.php');
 	require_once(LIB_PATH.DS.'tag.php');
 	require_once(LIB_PATH.DS.'ItemTag.php');
 }

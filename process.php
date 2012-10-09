@@ -210,6 +210,15 @@
 			}
 			redirect_to('system_settings.php?error=49');
 			break;
+		case "upload":
+			if($_FILES['uploadedfile']){
+				$target_path = basename( $_FILES['uploadedfile']['name']);
+				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){
+					rename($target_path, 'uploads/' . $target_path);
+					redirect_to('uploads/' . $target_path);
+				}
+			}
+			break;
 	}
 	
 	

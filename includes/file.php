@@ -2,7 +2,7 @@
 
 require_once(LIB_PATH.DS.'database.php');
 
-class FileObject extends DatabaseObject {
+class File extends DatabaseObject {
 	
 	protected static $table_name = 'files';
 	protected static $db_fields = array('id', 'name', 'creation_date', 'file_type', 'object_id', 'parent_id', 'owner_id', 'status', 'visibility');   
