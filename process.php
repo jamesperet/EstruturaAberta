@@ -219,16 +219,22 @@
 					if($filecheck){
 						$link = 'upload.php?error=1';
 						redirect_to($link);
-					} else { $file_name = $_POST['filename'] . '.' . $extension;}
+					} else { 
+						$file_name = $_POST['filename'];
+						$file_path = 'uploads/' . $file_name . '.' . $extension;
+					}
 				} else {
 					$filecheck = File::name_check($_FILES['uploadedfile']['name']);
 					if($filecheck){
 						$link = 'upload.php?error=2';
 						redirect_to($link);
-					} else { $file_name = $_FILES['uploadedfile']['name'];}
+					} else { 
+						$file_name = $_FILES['uploadedfile']['name'];
+						$file_path = 'uploads/' . $file_name . '.' . $extension;
+					}
 				}				
 				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){					
-					rename($target_path, 'uploads/' . $file_name);
+					rename($target_path, $file_path);
 					switch($extension){
 						case jpg:
 							$file_type = 'image';
@@ -246,7 +252,7 @@
 							$file_type = 'image';
 							break;
 					}
-					$new_file = File::add_file($file_name, $file_type, 'uploads/' . $file_name);
+					$new_file = File::add_file($file_name, $file_type, $file_path);
 					$link = 'media.php?file=' . $new_file;
 					redirect_to($link);
 				}

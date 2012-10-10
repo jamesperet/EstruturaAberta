@@ -85,14 +85,10 @@
     <div class="container">
 		<div class="row">
 			<div class="span12">
-				<div class="page-header">
-				  <?php
-
-				  ?>				  
-				</div>
 				<?php
 					$file = File::find_by_id($_GET['file']);
-					echo '<img class="img-polaroid" src="uploads/' . $file->name . '">';
+					echo '<h1>' . $file->name . '</h1>';
+					echo '<img class="img-polaroid" src="' . $file->file_path . '">';
 				?>
 				    
 			</div>
