@@ -213,9 +213,40 @@
 		case "upload":
 			if($_FILES['uploadedfile']){
 				$target_path = basename( $_FILES['uploadedfile']['name']);
-				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){
-					rename($target_path, 'uploads/' . $target_path);
-					$new_file = File::add_file($_FILES['uploadedfile']['name'], 'image', 0, 'public');
+				$extension = find_file_extension($target_path);
+				if($_POST['filename']){
+					$filecheck = File::name_check($_POST['filename']);
+					if($filecheck){
+						$link = 'upload.php?error=1';
+						redirect_to($link);
+					} else { $file_name = $_POST['filename'] . '.' . $extension;}
+				} else {
+					$filecheck = File::name_check($_FILES['uploadedfile']['name']);
+					if($filecheck){
+						$link = 'upload.php?error=2';
+						redirect_to($link);
+					} else { $file_name = $_FILES['uploadedfile']['name'];}
+				}				
+				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){					
+					rename($target_path, 'uploads/' . $file_name);
+					switch($extension){
+						case jpg:
+							$file_type = 'image';
+							break;
+						case jpeg:
+							$file_type = 'image';
+							break;
+						case png:
+							$file_type = 'image';
+							break;
+						case bmp:
+							$file_type = 'image';
+							break;
+						case gif:
+							$file_type = 'image';
+							break;
+					}
+					$new_file = File::add_file($file_name, $file_type, 'uploads/' . $file_name);
 					$link = 'media.php?file=' . $new_file;
 					redirect_to($link);
 				}

@@ -5,30 +5,25 @@ require_once(LIB_PATH.DS.'database.php');
 class File extends DatabaseObject {
 	
 	protected static $table_name = 'files';
-	protected static $db_fields = array('id', 'name', 'creation_date', 'file_type', 'object_id', 'parent_id', 'owner_id', 'status', 'visibility');   
+	protected static $db_fields = array('id', 'name', 'creation_date', 'file_type', 'owner_id', 'file_path');   
 	public $id;
 	public $name;
 	public $creation_date;
 	public $file_type;
-	public $object_id;
-	public $parent_id;
 	public $owner_id;
-	public $status;
-	public $visibility;
+	public $file_path;
 	
-	public static function add_file($name, $file_type, $object_id=0, $parent_id, $visibility){
+	public static function add_file($name, $file_type, $file_path){
 		$file = new File();
 		$file->name = $name;
 		$file->file_type = $file_type;
-		$file->object_id = $object_id;
-		$file->parent_id = $parent_id;		
 		$file->owner_id = $_SESSION['user_id'];	
 		$dt = new DateTime("now");
 		$date = $dt->format('Y-m-d H:i:sP');
 		$file->creation_date = $date;
-		$file->visibility = $visibility;
+		$file->file_path = $file_path;
 		$file->save();
-		Permission::add_permission($file->id, $_SESSION['user_id'], 'delete');
+		//Permission::add_permission($file->id, $_SESSION['user_id'], 'delete');
 		return $file->id;
 	}
 	
@@ -72,5 +67,9 @@ class File extends DatabaseObject {
 				return $object_array;
 			}
 		}
-	
+	public static function name_check($name){
+		$sql  = "SELECT * FROM " . self::$table_name;
+  		$sql .= " WHERE `name`='". $name . "'";
+  		return self::find_by_sql($sql);
+	}
 }

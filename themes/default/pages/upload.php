@@ -94,11 +94,19 @@
 			<form class="well" method="post" action="process.php?action=upload" enctype="multipart/form-data">
 				<fieldset>
 					<legend>Upload de arquivo</legend>
+					<?php if($_GET['error']){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}?>
 					<div class="row">
 					<div class="control-group span3">
 			            <label class="control-label" for="input01">Escolha um arquivo</label>
 			            <div class="controls">
 			              <input style="margin-bottom: 15px;" name="uploadedfile" type="file"/>
+			            </div>
+			        </div>
+			        
+			        <div class="control-group span4">
+			            <label class="control-label" for="input01">Novo nome do arquivo</label>
+			            <div class="controls">
+			              <input type="text" name="filename" class="input-large"> 
 			            </div>
 			        </div>
 			        
