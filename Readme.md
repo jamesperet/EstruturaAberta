@@ -1,4 +1,4 @@
-# Estrutura Aberta v0.2 - Versão Experimental
+# Estrutura Aberta v0.2
 
 
 ## Introdução
