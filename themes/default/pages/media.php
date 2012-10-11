@@ -104,9 +104,14 @@
 		} else {
 			echo '<div class="row"><div class="span12">';
 		  	echo '<h1>Media</h1>';
-		  	echo '</div></div><div class="row">';
+		  	echo '</div>';
 			$all_media = File::find_all();
+			$columns = 0;
 			foreach($all_media as $media) {
+				if($columns == 0){
+					$columns = 6;
+					echo '</div><div class="row">';
+				}
 				echo '<div class="span2" style="text-align: center;">';
 				$user = User::find_by_id($media->owner_id);
 				switch($media->file_type){
@@ -118,6 +123,7 @@
 				}
 				echo '<a href="media.php?file='. $media->id .'"><small>' . $media->name . '</small></a>';
 				echo '</div>';
+				$columns = $columns - 1;
 			}
 			echo '</div>';
 		}
