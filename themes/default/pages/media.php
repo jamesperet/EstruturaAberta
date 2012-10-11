@@ -111,7 +111,7 @@
 				$user = User::find_by_id($media->owner_id);
 				switch($media->file_type){
 					case 'image':
-						echo '<div class="img-polaroid" style="width: 100%; max-width: 180px;><a href="media.php?file=' . $media->id . '"><img src="' . $media->file_path . '" style="height: 130px; margin: auto;"></a></div>';
+						echo '<div class="img-polaroid" style="width: 100%; max-width: 180px;"><a href="media.php?file=' . $media->id . '"><img src="' . $media->file_path . '" style="height: 130px; margin: auto;"></a></div>';
 						break;
 					case 'movie':
 						echo '<a href="media.php?file='. $media->id .'"><div class="img-polaroid" style="width: 100%; max-width: 180px; height: 130px;"><div style="background-color: black; border-radius: 50px; width: 21px; height: 21px; margin: auto; margin-top: 55px; margin-bottom: 15px;"><i class="icon-play icon-white"></i></div></div></a>';
