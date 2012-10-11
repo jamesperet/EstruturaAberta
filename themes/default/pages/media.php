@@ -83,18 +83,33 @@
     </div>
 
     <div class="container">
-		<div class="row">
-			<div class="span12">
-				<?php
-					$file = File::find_by_id($_GET['file']);
-					echo '<h1>' . $file->name . '</h1>';
-					echo '<img class="img-polaroid" src="' . $file->file_path . '">';
-				?>
+		
+			
+	<?php
+		
+		if($_GET['file']){
+			$file = File::find_by_id($_GET['file']);
+			echo '<div class="row"><div class="span12">';
+			echo '<h1>' . $file->name . '</h1>';
+			echo '<img class="img-polaroid" src="' . $file->file_path . '">';
+			echo '</div></div>';
+		} else {
+			echo '<div class="row"><div class="span12">';
+		  	echo '<h1>Media</h1>';
+		  	echo '</div></div><div class="row">';
+			$all_media = File::find_all();
+			foreach($all_media as $media) {
+				echo '<div class="span2" style="text-align: center;">';
+				$user = User::find_by_id($media->owner_id);
+				echo '<a href="media.php?file=' . $media->id . '"><img class="img-polaroid" src="' . $media->file_path . '"></a>';
+				echo '<small>' . $media->name . '</small>';
+				echo '</div>';
+			}
+			echo '</div>';
+		}
+		
+	?>
 				    
-			</div>
-		</div>
-
-
 
       <hr>
 
