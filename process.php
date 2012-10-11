@@ -251,6 +251,12 @@
 						case gif:
 							$file_type = 'image';
 							break;
+						case mp4:
+							$file_type = 'movie';
+							break;
+						case mov:
+							$file_type = 'movie';
+							break;
 					}
 					$new_file = File::add_file($file_name, $file_type, $file_path);
 					$link = 'media.php?file=' . $new_file;

@@ -90,8 +90,16 @@
 		if($_GET['file']){
 			$file = File::find_by_id($_GET['file']);
 			echo '<div class="row"><div class="span12">';
-			echo '<h1>' . $file->name . '</h1>';
-			echo '<img class="img-polaroid" src="' . $file->file_path . '">';
+			switch($file->file_type){
+				case 'image':
+					echo '<h1>' . $file->name . '</h1>';
+					echo '<img class="img-polaroid" src="' . $file->file_path . '">';
+					break;
+				case 'movie':
+					echo '<h1>' . $file->name . '</h1>';
+					echo '<video controls><source src="' . $file->file_path . '" type="video/mp4"></video';
+					break;
+			}
 			echo '</div></div>';
 		} else {
 			echo '<div class="row"><div class="span12">';
@@ -101,8 +109,14 @@
 			foreach($all_media as $media) {
 				echo '<div class="span2" style="text-align: center;">';
 				$user = User::find_by_id($media->owner_id);
-				echo '<a href="media.php?file=' . $media->id . '"><img class="img-polaroid" src="' . $media->file_path . '"></a>';
-				echo '<small>' . $media->name . '</small>';
+				switch($media->file_type){
+					case 'image':
+						echo '<a href="media.php?file=' . $media->id . '"><img class="img-polaroid" src="' . $media->file_path . '"></a>';
+						break;
+					case 'movie':
+						echo '<a href="media.php?file='. $media->id .'"><div class="img-polaroid" style="width: 100%; min-height: 130px;"><div style="background-color: black; border-radius: 50px; width: 21px; height: 21px; margin: auto; margin-top: 55px; margin-bottom: 15px;"><i class="icon-play icon-white"></i></div></div></a>';
+				}
+				echo '<a href="media.php?file='. $media->id .'"><small>' . $media->name . '</small></a>';
 				echo '</div>';
 			}
 			echo '</div>';
