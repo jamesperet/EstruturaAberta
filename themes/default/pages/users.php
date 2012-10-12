@@ -56,6 +56,8 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class=""><a href="pages.php">Páginas</a></li>
+              <li><a href="tags.php">Tags</a></li>
+              <li><a href="media.php">Media</a></li>
               <li class="active"><a href="users.php">Usuários</a></li>
             </ul>
             <ul class="nav pull-right">
