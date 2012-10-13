@@ -78,7 +78,8 @@
 				if ($new_user) {
 			    	$session->login($new_user);
 			    	$message = MailTemplate('welcome.php');
-			    	sendMail($new_user->username, 'teste@gmail.com', 'Welcome', $message);
+			    	$settings = Setting::load();
+			    	sendMail($new_user->username, $settings->email, 'Welcome', $message);
 			    	redirect_to($link);
 				}
 				break;
@@ -163,8 +164,20 @@
 				redirect_to($link);
 				break;	
 			}
+			if($_POST['email'] != ''){
+				if(checkEmail($_POST['email'])){
+					$settings->email = $_POST['email'];
+				} else {
+					$link = 'system_settings.php?error=3';
+					redirect_to($link);
+				}
+			} else {
+				$link = 'system_settings.php?error=2';
+				redirect_to($link);
+			}
 			$settings->sys_name = $_POST['sys_name'];
 			$settings->theme = $_POST['theme'];
+			
 			$settings->update();
 			redirect_to('system_settings.php?success=1');
 			break;

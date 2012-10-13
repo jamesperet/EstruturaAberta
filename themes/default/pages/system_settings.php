@@ -143,6 +143,14 @@
 					  	</select>
 					  </div>
 					</div>
+					
+					<div class="control-group <?php if($_GET['error']==2 || $_GET['error']==3){ echo 'error'; } ?>">
+					  <label class="control-label" for="input01">Email</label>
+					  <div class="controls">
+					  	<input type="text" name="email" class="input-large" placeholder="" value="<?php echo $settings->email; ?>">
+					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'forneça um email'; }  if($_GET['error']==3){ echo 'Email invalido'; } ?></span>
+					  </div>
+					</div>
 										
 					<div class="form-actions">
 			            <button type="submit" class="btn btn-primary">Salvar</button>

@@ -143,6 +143,9 @@
 			    $user = User::find_by_id($_SESSION['user_id']);
 			    $user->user_type = 'admin';
 			    $user->update();
+			    $settings = Setting::load();
+			    $settings->email = $user->username;
+				$settings->update();
 			    $index = 7;
 			    break;
 			} else {
