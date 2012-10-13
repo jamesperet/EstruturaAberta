@@ -215,7 +215,7 @@
          tlid.push(TagId);
 
          var html = '';
-         html += ' <span class="badge" id="myTag_' + TagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" style="float: none; font-size: 16px;" class="close myTagRemover" id="myRemover_' + TagId + '" TagIdToRemove="' + TagId + '" title="Removing tag">x</a></span>';
+         html += ' <span class="label label-info" id="myTag_' + TagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" style="float: none; font-size: 16px;" class="close myTagRemover" id="myRemover_' + TagId + '" TagIdToRemove="' + TagId + '" title="Removing tag">x</a></span>';
          console.log(
               "tagList: " + tlis
             );

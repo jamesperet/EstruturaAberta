@@ -1,14 +1,7 @@
 <?php
-	
+	//require_once("includes/initialize.php");
 	if( $session->is_logged_in() ) {
 		$user = User::find_by_id($_SESSION['user_id']);
-	} else {
-		$link = $_GET['file'] . '/'; 
-		redirect_to($link); 
-	}
-	
-	if($_GET['file']){ 
-		$page = Page::find($_GET['file']);
 	}
 ?>
 
@@ -16,7 +9,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Upload de arquivo</title>
+    <title>
+	    Tags
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -60,17 +55,17 @@
           <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
-              <li><a href="tags.php">Tags</a></li>
+              <li><a href="pages.php">Páginas</a></li>
+              <li class="active"><a href="tags.php">Tags</a></li>
               <li><a href="media.php">Media</a></li>
               <li class=""><a href="users.php">Usuários</a></li>
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			  if($user) {
+			  
 			  	echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			  	echo '</li><li class="dropdown">';
+			 if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
 				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
@@ -90,49 +85,24 @@
     </div>
 
     <div class="container">
+		<div class="row">
+			<div class="span12">
+				<div class="page-header">
+					<h1>Tags</h1>
+				</div>
+				<p>
+				    <?php
+						$all_tags = Tag::find_all();
+	              		foreach($all_tags as $item_tag){
+	              			$tagged_items = ItemTag::count_tags($item_tag->id);
+		              		echo '<a href="pages.php?tag='. $item_tag->name .'"><span class="label label-info">' . $item_tag->name . ' (' . $tagged_items . ')</span></a> ';
+		              	}
+						
+					?>
+				</p>
+			</div>
+		</div>
 
-    <div class="row">
-    	<div class="span12">
-			<form class="well" method="post" action="process.php?action=upload" enctype="multipart/form-data">
-				<fieldset>
-					<legend>Upload de arquivo</legend>
-					<?php if($_GET['error']){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}?>
-					<div class="row">
-					<div class="control-group span3">
-			            <label class="control-label" for="input01">Escolha um arquivo</label>
-			            <div class="controls">
-			              <input style="margin-bottom: 15px;" name="uploadedfile" type="file"/>
-			            </div>
-			        </div>
-			        
-			        <div class="control-group span4">
-			            <label class="control-label" for="input01">Novo nome do arquivo</label>
-			            <div class="controls">
-			              <input type="text" name="filename" class="input-large"> 
-			            </div>
-			        </div>
-			        
-			        <div class="control-group span4">
-			            <label class="control-label" for="input01">Tags</label>
-			            <div class="controls">
-			              <input type="text" class="input-small tagManager" style="margin: 0 auto;" data-provide="typeahead"  data-items="4"> 
-			            </div>
-			        </div>
-					</div>
-		
-					<div class="form-actions">
-		            	<button type="submit" class="btn btn-primary">Enviar</button>
-		            	<a class="btn" href="<?php if($_GET['file']) { echo $_GET['file'] . '/';} else { echo 'index.php';} ?>">Cancelar</a>
-		            </div>
-		            
-				</fieldset>
-			  
-
-			  
-			  
-			</form>
-    	</div>
-    </div>
 
 
       <hr>
@@ -161,42 +131,7 @@
       echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
       echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
       echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
-
-    
-    <script>
-    	$(document).ready(function() {
-    		 jQuery(".tagManager").tagsManager( { 
-    		 	
-    		 	prefilled: 
-    		 	[ 
-    		 		<?php
-						/*
-						$page_tags = ItemTag::find($page->id, 'page');
-						foreach($page_tags as $item_tag){
-							$tag_name = Tag::find_by_id($item_tag->tag_id);
-							echo '"' . $tag_name->name . '", ';
-						}
-						*/
-						
-					?>
-    		 	],
-    		 	preventSubmitOnEnter: true,
-    		 	typeahead: true,
-    		 	typeaheadSource: 
-    		 	[
-    		 		<?php
-						$all_tags = Tag::find_all();
-	              		foreach($all_tags as $item_tag){
-		              		echo '"' . $item_tag->name . '", ';
-		              	}
-						
-					?>
-    		 	]
-    		 } )
-    	});
-    </script>
 
   </body>
 </html>
