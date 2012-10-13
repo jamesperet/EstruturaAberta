@@ -273,6 +273,24 @@
 							break;
 					}
 					$new_file = File::add_file($file_name, $file_type, $file_path);
+					$tags = explode( ',', $_POST['hiddenTagList']);
+					if($tags){
+						foreach($tags as $tag){
+							$dbTag = Tag::find($tag);
+							if(!$dbTag){
+								$dbTag = Tag::new_tag($tag);
+								$dbTag = Tag::find($tag);
+							}
+							ItemTag::tag($new_file, $dbTag->id, 'media');
+						}
+						foreach($page_tags as $item_tag){
+							$tag_name = Tag::find_by_id($item_tag->tag_id);
+							if(!in_array($tag_name->name, $tags)){
+								$item_tag->delete();
+							}
+						}
+					}
+					
 					$link = 'media.php?file=' . $new_file;
 					redirect_to($link);
 				}

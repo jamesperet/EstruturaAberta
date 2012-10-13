@@ -136,7 +136,26 @@
       <hr>
 
       <footer>
-        <p><?php echo $settings->footer_msg; ?></p>
+      
+        <?php 
+	        if($_GET['file']){
+			    echo '<div class="row"><div class="span12">';
+	  			$page_tags = ItemTag::find($file->id, 'media');
+	  			if($page_tags) { echo '<p>Tags: ';}
+	  			foreach($page_tags as $item_tag){
+	      			$tag_name = Tag::find_by_id($item_tag->tag_id);
+	      			echo '<a href="pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+	      		}
+	      		if($page_tags) { echo '| ';}
+	      		$user = User::find_by_id($file->owner_id);
+	      		echo '<i class="icon-user"></i> '. $user->full_name() .' ';
+	      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($media->creation_date) . ' | ';
+	      		echo $settings->footer_msg; 	
+			    echo '</div></div>';    
+	        } else {
+	        	echo '<p>' . $settings->footer_msg . '</p>';
+	        }
+        ?>
       </footer>
 
     </div> <!-- /container -->
