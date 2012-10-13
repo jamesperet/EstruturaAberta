@@ -177,6 +177,7 @@
 			}
 			$settings->sys_name = $_POST['sys_name'];
 			$settings->theme = $_POST['theme'];
+			$settings->footer_msg = $_POST['footer_msg'];
 			
 			$settings->update();
 			redirect_to('system_settings.php?success=1');

@@ -154,20 +154,22 @@
 
       <footer>
       	<div class="row">
-	      	<div class="span4">
+	      	<div class="span12">
 	      	<p>Tags: 
 	      		<?php
 	      			$page_tags = ItemTag::find($page->id, 'page');
 	      			foreach($page_tags as $item_tag){
 		      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-		      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="badge">' . $tag_name->name . "</span></a> ";
+		      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
 		      		}
+		      		$user = User::find_by_id($page->creator_id);
+		      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
+		      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
+		      		echo $settings->footer_msg;
 	      			
 	      		?>
 	      	</div>
       	</div>
-      	<hr>
-        <p>&copy; High Effects 2012</p>
       </footer>
 
     </div> <!-- /container -->

@@ -151,6 +151,13 @@
 					  	<span class="help-inline"><?php if($_GET['error']==2){ echo 'forneça um email'; }  if($_GET['error']==3){ echo 'Email invalido'; } ?></span>
 					  </div>
 					</div>
+					
+					<div class="control-group">
+					  <label class="control-label" for="input01">Footer Copyright</label>
+					  <div class="controls">
+					  	<input type="text" name="footer_msg" class="input-large" placeholder="" value="<?php echo $settings->footer_msg; ?>">
+					  </div>
+					</div>
 										
 					<div class="form-actions">
 			            <button type="submit" class="btn btn-primary">Salvar</button>
@@ -195,7 +202,7 @@
       <hr>
 
       <footer>
-        <p>&copy; High Effects 2012</p>
+        <p><?php echo $settings->footer_msg; ?></p>
       </footer>
 
     </div> <!-- /container -->

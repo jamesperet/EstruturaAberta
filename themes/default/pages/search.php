@@ -118,7 +118,7 @@
       <hr>
 
       <footer>
-        <p>&copy; High Effects 2012</p>
+        <p><?php echo $settings->footer_msg; ?></p>
       </footer>
 
     </div> <!-- /container -->

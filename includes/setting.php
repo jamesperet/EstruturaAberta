@@ -5,12 +5,13 @@ require_once(LIB_PATH.DS.'database.php');
 class Setting extends DatabaseObject {
 
 	protected static $table_name = "settings";
-	protected static $db_fields = array('id','sys_name', 'initial_page', 'theme', 'email');   
+	protected static $db_fields = array('id','sys_name', 'initial_page', 'theme', 'email', 'footer_msg');   
 	public $id;
 	public $sys_name;
 	public $initial_page;
 	public $theme;
 	public $email;
+	public $footer_msg;
 
 	public static function load() {
 		$sql  = "SELECT * FROM " . self::$table_name;
