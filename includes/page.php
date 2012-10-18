@@ -5,16 +5,19 @@ require_once(LIB_PATH.DS.'database.php');
 class Page extends DatabaseObject {
 
 	protected static $table_name = "pages";
-	protected static $db_fields = array('id', 'name', 'content', 'creator_id', 'creation_date');   
+	protected static $db_fields = array('id', 'name', 'content', 'creator_id', 'creation_date', 'parent_id', 'page_type');   
 	public $id;
 	public $name;
 	public $content;
 	public $creator_id;
 	public $creation_date;
+	public $parent_id;
+	public $page_type;
 
-	public static function find($file_name) {
+	public static function find($file_name, $parent_id=0) {
 		$sql  = "SELECT * FROM " . self::$table_name;
-		$sql .= " WHERE name='". $file_name . "'";
+		$sql .= " WHERE name='". $file_name . "' AND ";
+		$sql .= " parent_id='". $parent_id . "'";
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
   }

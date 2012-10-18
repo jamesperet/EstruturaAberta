@@ -2,28 +2,43 @@
 		
 	if( $session->is_logged_in() ) { $user = User::find_by_id($_SESSION['user_id']); }
 	
+	// Achar a página atual procurando pela hierarquia de páginas na URL que vem via GET
+	// Essa nova URL com variaveis são direcioadas pelo arquivo .htaccess
+	
     if(!$_GET['file']){ 
-		//$settings = Setting::load();
-		// $page = Page::find($settings->initial_page);
 		$link = $settings->initial_page . '/';
 		redirect_to($link);
 	}
-	if($_GET['file']) {
-		$page_slug =  $_GET['file'];
-		$level = 1;
-	}
-	if($_GET['file'] && $_GET['file1']){
-		$page_slug =  $_GET['file1'];
-		$level = 2;
-	}
-	if($_GET['file'] && $_GET['file1']&& $_GET['file2']){
+	elseif($_GET['file'] && $_GET['file1'] && $_GET['file2'] && $_GET['file3']){
+		$page_slug =  $_GET['file3'];
+		$great_grand_parent_page = Page::find($_GET['file']);
+		$grand_parent_page = Page::find($_GET['file1'], $great_grand_parent_page->id);
+		$parent_page = Page::find($_GET['file2'], $grand_parent_page->id);
+		$page = Page::find($page_slug, $parent_page->id);
+		$level = 4;
+	} 
+	elseif($_GET['file'] && $_GET['file1']&& $_GET['file2']){
 		$page_slug =  $_GET['file2'];
+		$grand_parent_page = Page::find($_GET['file']);
+		$parent_page = Page::find($_GET['file1'], $grand_parent_page->id);
+		$page = Page::find($page_slug, $parent_page->id);
 		$level = 3;	
 	}
-	if($_GET['file'] && $_GET['file1'] && $_GET['file2'] && $_GET['file3']){
-		$page_slug =  $_GET['file3'];
-		$level = 4;
+	elseif($_GET['file'] && $_GET['file1']){
+		$page_slug =  $_GET['file1'];
+		$parent_page = Page::find($_GET['file']);
+		$page = Page::find($page_slug, $parent_page->id);
+		$level = 2;
 	}
+	elseif($_GET['file']) {
+		$page_slug =  $_GET['file'];
+		$page = Page::find($page_slug);
+		$level = 1;
+	}
+	else {
+    	$level = 0;
+	}
+	
 ?>
 
 <!DOCTYPE html>
@@ -32,14 +47,11 @@
     <meta charset="utf-8">
     <title>
     	<?php 
-	    	if($page_slug){ 
-	    		echo $page_slug;
-	    		$page = Page::find($page_slug);
-	    		$root = 1;
-	    	} else {
+	        if($page_slug){ 
+		    	echo $page_slug;
+			} else {
 		    	echo SYS_NAME;
-		    	$root = 0;
-	    	}
+			}
     	?>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
