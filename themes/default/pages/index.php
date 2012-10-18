@@ -15,7 +15,14 @@
 	if($_GET['file'] && $_GET['file1']){
 		$page_slug =  $_GET['file1'];
 		$level = 2;
-		
+	}
+	if($_GET['file'] && $_GET['file1']&& $_GET['file2']){
+		$page_slug =  $_GET['file2'];
+		$level = 3;	
+	}
+	if($_GET['file'] && $_GET['file1'] && $_GET['file2'] && $_GET['file3']){
+		$page_slug =  $_GET['file3'];
+		$level = 4;
 	}
 ?>
 
@@ -87,38 +94,38 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="../"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
+          <?php $settings = Setting::load(); echo '<a class="brand" href="' . back_path($level) . '">' . $settings->sys_name . '</a>'; ?>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="../pages.php">Páginas</a></li>
-              <li><a href="../tags.php">Tags</a></li>
-              <li><a href="../media.php">Media</a></li>
-              <li class=""><a href="../users.php">Usuários</a></li>
+              <li class=""><a href="<?php echo back_path($level); ?>pages.php">Páginas</a></li>
+              <li><a href="<?php echo back_path($level); ?>tags.php">Tags</a></li>
+              <li><a href="<?php echo back_path($level); ?>media.php">Media</a></li>
+              <li class=""><a href="<?php echo back_path($level); ?>users.php">Usuários</a></li>
                           </ul>
             <ul class="nav pull-right">
 			  <?php
 			  if($user) {
 			  	echo '<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="../edit_page.php?action=create&file=' . $page_slug . '">Criar página</a></li>';
-			    echo '<li><a href="../upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
+			    echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&file=' . $page_slug . '">Criar página</a></li>';
+			    echo '<li><a href="' . back_path($level) . 'upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
-			  	echo '<li><a href="../edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
-			  	echo '<li><a href="../process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+			  	echo '<li><a href="' . back_path($level) . 'edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
+			  	echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
 			  	echo '<li class="divider-vertical"></li>';
 			 }
-			  	echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			  	echo '<li><form class="navbar-search pull-left method="post" action="' . back_path($level) . 'search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 			    echo '<li class="divider-vertical"></li><li class="dropdown">';
 			 if($user) {
 			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="../user_settings.php">Minhas configurações</a></li>';
-			    if($user->user_type == 'admin'){ echo '<li><a href="../system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="../process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
+			    echo '<li><a href="' . back_path($level) . 'user_settings.php">Minhas configurações</a></li>';
+			    if($user->user_type == 'admin'){ echo '<li><a href="' . back_path($level) . 'system_settings.php">Configurações do sistema</a></li>'; }
+			    echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
-			  	  echo '<li class=""><a href="../signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="../login.php">Entrar</a></li>';
+			  	  echo '<li class=""><a href="' . back_path($level) . 'signup.php">Cadastro</a></li>';
+				  echo '<li class=""><a href="' . back_path($level) . 'login.php">Entrar</a></li>';
 			  }
 
 			  ?>
@@ -191,21 +198,21 @@
     <!-- Placed at the end of the document so the pages load faster -->
     
     <?php
-      echo '<script src="../themes/' . $settings->theme . '/js/jquery.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
-      echo '<script src="../themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
 
   </body>
