@@ -4,5 +4,6 @@ RewriteEngine on
 
 RewriteRule ^process.php$ $0 [L]
 RewriteRule ^install.php$ $0 [L]
-RewriteRule ^(.*)/$ index.php?file=$1 [QSA]
+RewriteRule  ^([^/]+)/$ index.php?file=$1 [QSA]
+RewriteRule  ^([^/]+)/([^/]+)/$ index.php?file=$1&file1=$2 [QSA]
 RewriteRule ^(.*).php$ index.php?route=$1 [QSA,L]

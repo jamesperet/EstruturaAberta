@@ -8,6 +8,15 @@
 		$link = $settings->initial_page . '/';
 		redirect_to($link);
 	}
+	if($_GET['file']) {
+		$page_slug =  $_GET['file'];
+		$level = 1;
+	}
+	if($_GET['file'] && $_GET['file1']){
+		$page_slug =  $_GET['file1'];
+		$level = 2;
+		
+	}
 ?>
 
 <!DOCTYPE html>
@@ -16,9 +25,9 @@
     <meta charset="utf-8">
     <title>
     	<?php 
-	    	if($_GET['file']){ 
-	    		echo $_GET['file'];
-	    		$page = Page::find($_GET['file']);
+	    	if($page_slug){ 
+	    		echo $page_slug;
+	    		$page = Page::find($page_slug);
 	    		$root = 1;
 	    	} else {
 		    	echo SYS_NAME;
@@ -33,10 +42,10 @@
     <!-- Le styles -->
     
     <?php
-    if(!$_GET['file']){
-      echo '<link href="../themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+    if(!$page_slug){
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     } else {
-	  echo '<link href="../themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     }
     ?>
     
@@ -49,10 +58,10 @@
     </style>
     
     <?php
-    if(!$_GET['file']){
-      echo '<link href="../themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+    if(!$page_slug){
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     } else {
-	  echo '<link href="../themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     }
     ?>
 
@@ -91,11 +100,11 @@
 			  if($user) {
 			  	echo '<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="../edit_page.php?action=create&file=' . $_GET['file'] . '">Criar página</a></li>';
-			    echo '<li><a href="../upload.php?file=' . $_GET['file'] . '">Upload de arquivo</a></li>';
+			    echo '<li><a href="../edit_page.php?action=create&file=' . $page_slug . '">Criar página</a></li>';
+			    echo '<li><a href="../upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
-			  	echo '<li><a href="../edit_page.php?file=' . $_GET['file'] . '&action=edit""><i class="icon-pencil"></i></a></li>';
-			  	echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=delete"><i class="icon-remove"></i></a></li>';
+			  	echo '<li><a href="../edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
+			  	echo '<li><a href="../process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
 			  	echo '<li class="divider-vertical"></li>';
 			 }
 			  	echo '<li><form class="navbar-search pull-left method="post" action="../search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
@@ -105,7 +114,7 @@
 			    echo '<ul class="dropdown-menu">';
 			    echo '<li><a href="../user_settings.php">Minhas configurações</a></li>';
 			    if($user->user_type == 'admin'){ echo '<li><a href="../system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="../process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
+			    echo '<li><a href="../process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
 			    echo '</ul></li>';
 			  } else {
 			  	  echo '<li class=""><a href="../signup.php">Cadastro</a></li>';
@@ -124,7 +133,7 @@
     
     <?php    
     // Mostrar o conteúdo da página
-    if(!$_GET['file']){
+    if(!$page_slug){
       // Se não for especificada uma página, carregue as informações do sistema
       echo '<div class="hero-unit">';
       echo '<h1>' . SYS_NAME . " " . CURRENT_VERSION .'</h1>';
@@ -132,7 +141,7 @@
       echo '</div>';
     } else {
 	  // Se uma página foi especificada
-      //$page = Page::find($_GET['file']);
+      //$page = Page::find($page_slug);
       if($page) {
       	  // Carregar a página do banco de dados
 	      echo '<div class="row"><div class="span12">';
@@ -141,9 +150,9 @@
 	  } else {
 	  	  // Mostrar página inexistente
 		  echo '<div class="hero-unit">';
-	      echo '<h1>' . $_GET['file'] .'</h1>';
+	      echo '<h1>' . $page_slug .'</h1>';
 	      echo '<p>Está pagina não existe.</p>';
-	      echo '<p><a class="btn btn-primary btn-large" href="../edit_page.php?file=' . $_GET['file'] .'&action=create">Criar Pagina</a></p>';
+	      echo '<p><a class="btn btn-primary btn-large" href="../edit_page.php?file=' . $page_slug .'&action=create">Criar Pagina</a></p>';
 	      echo '</div>';
 	  }
     }
@@ -155,18 +164,21 @@
       <footer>
       	<div class="row">
 	      	<div class="span12">
-	      	<p>Tags: 
+	      	 
 	      		<?php
-	      			$page_tags = ItemTag::find($page->id, 'page');
-	      			foreach($page_tags as $item_tag){
-		      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-		      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+	      			if($page){
+	      				echo '<p>Tags: ';
+		      			$page_tags = ItemTag::find($page->id, 'page');
+		      			foreach($page_tags as $item_tag){
+			      			$tag_name = Tag::find_by_id($item_tag->tag_id);
+			      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+			      		}
+			      		$user = User::find_by_id($page->creator_id);
+			      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
+			      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
+			      		
 		      		}
-		      		$user = User::find_by_id($page->creator_id);
-		      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
-		      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
-		      		echo $settings->footer_msg;
-	      			
+	      			echo $settings->footer_msg;
 	      		?>
 	      	</div>
       	</div>

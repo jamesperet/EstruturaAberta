@@ -153,4 +153,17 @@ function find_file_extension($filename) {
 	 return $exts; 
  } 
 
+function back_path($level){
+	if($level == 0){
+		return '';
+	} else {
+		$counter = 1;
+		while($counter <= $level){
+			$path .= '../';
+			$counter = $counter + 1;
+		}
+		return $path;
+	}
+}
+
 ?>
