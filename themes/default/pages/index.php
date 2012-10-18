@@ -119,7 +119,10 @@
 			  if($user) {
 			  	echo '<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i></a>';
 			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&file=' . $page_slug . '">Criar página</a></li>';
+			    echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&parent_id=' . $page->parent_id . '">Criar página</a></li>';
+			    if($level < 4){
+			    	echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&parent_id=' . $page->id . '">Criar sub-página</a></li>';
+			    }
 			    echo '<li><a href="' . back_path($level) . 'upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
 			  	echo '<li><a href="' . back_path($level) . 'edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
@@ -171,7 +174,7 @@
 		  echo '<div class="hero-unit">';
 	      echo '<h1>' . $page_slug .'</h1>';
 	      echo '<p>Está pagina não existe.</p>';
-	      echo '<p><a class="btn btn-primary btn-large" href="../edit_page.php?file=' . $page_slug .'&action=create">Criar Pagina</a></p>';
+	      echo '<p><a class="btn btn-primary btn-large" href="' . back_path($level) . 'edit_page.php?file=' . $page_slug .'&action=create">Criar Pagina</a></p>';
 	      echo '</div>';
 	  }
     }
@@ -190,7 +193,7 @@
 		      			$page_tags = ItemTag::find($page->id, 'page');
 		      			foreach($page_tags as $item_tag){
 			      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-			      			echo '<a href="../pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+			      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
 			      		}
 			      		$user = User::find_by_id($page->creator_id);
 			      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';

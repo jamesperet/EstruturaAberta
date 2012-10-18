@@ -113,10 +113,10 @@
 									if($_GET['tag']){
 										$tag = Tag::find($_GET['tag']);
 										if(ItemTag::find_object_tag($page->id, $tag->id, 'page')){
-											echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+											echo '<tr><td><a href="' . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
 										}
 									} else {
-										echo '<tr><td><a href="' . $page->name . '/">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+										echo '<tr><td><a href="' . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
 									}
 								}
 						?>

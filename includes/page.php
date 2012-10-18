@@ -22,12 +22,13 @@ class Page extends DatabaseObject {
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
   
-  	public static function create_page($file, $content){
+  	public static function create_page($file, $content, $parent_id=0){
 		$new_page = new Page();
 		$new_page->name = $file;
 		$new_page->content = $content;
 		$new_page->creator_id = $_SESSION['user_id'];;
 		$new_page->creation_date = timeNow();
+		$new_page->parent_id = $parent_id;
 		return $new_page->save();
 	}
 

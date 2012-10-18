@@ -112,8 +112,8 @@
 			redirect_to('user_settings.php');
 		case "create":
 			// Create Page 
-			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content']);
-			$link = $_POST['page_name'] . '/';
+			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id']);
+			$link = build_link($new_page);
 			redirect_to($link);
 			break;
 		case "edit":

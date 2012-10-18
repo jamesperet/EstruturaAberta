@@ -93,7 +93,7 @@
 
     <div class="row">
     	<div class="span12">
-			<form class="well" method="post" action="process.php?file=<?php echo $_GET['file'] . '&action=' . $_GET['action'];?>">
+			<form class="well" method="post" action="process.php?file=<?php echo $_GET['file'] . '&action=' . $_GET['action'] . '&parent_id=' . $_GET['parent_id'];?>">
 				<fieldset>
 					<legend>Editar página</legend>
 					

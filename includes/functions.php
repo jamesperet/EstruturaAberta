@@ -166,4 +166,30 @@ function back_path($level){
 	}
 }
 
+function build_link($page_id) {
+	$page = Page::find_by_id($page_id);
+	if($page->parent_id != 0){
+		$parent_page = Page::find_by_id($page->parent_id);
+		if($parent_page->parent_id != 0){
+			$grand_parent_page = Page::find_by_id($parent_page->parent_id);
+			if($grand_parent_page->parent_id != 0){
+				$great_grand_parent_page = Page::find_by_id($grand_parent_page->parent_id);
+			}
+		}
+	}
+	if($great_grand_parent_page){
+		$link = $great_grand_parent_page->name . '/';
+	}
+	if($grand_parent_page){
+		$link .= $grand_parent_page->name . '/';
+	}
+	if($parent_page){
+		$link .= $parent_page->name . '/';
+	}
+	if($page){
+		$link .= $page->name . '/';
+	}
+	return $link;
+}
+
 ?>
