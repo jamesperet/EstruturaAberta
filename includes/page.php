@@ -5,7 +5,7 @@ require_once(LIB_PATH.DS.'database.php');
 class Page extends DatabaseObject {
 
 	protected static $table_name = "pages";
-	protected static $db_fields = array('id', 'name', 'content', 'creator_id', 'creation_date', 'parent_id', 'page_type');   
+	protected static $db_fields = array('id', 'name', 'content', 'creator_id', 'creation_date', 'parent_id', 'page_type', 'object_id');   
 	public $id;
 	public $name;
 	public $content;
@@ -13,6 +13,7 @@ class Page extends DatabaseObject {
 	public $creation_date;
 	public $parent_id;
 	public $page_type;
+	public $object_id;
 
 	public static function find($file_name, $parent_id=0) {
 		$sql  = "SELECT * FROM " . self::$table_name;

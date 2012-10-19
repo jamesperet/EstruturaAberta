@@ -39,6 +39,12 @@
     	$level = 0;
 	}
 	
+	$content_type = ContentType::load($page->page_type);
+	if($page->page_type != 'page'){		
+		$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
+		require_once($link);
+	}
+
 ?>
 
 <!DOCTYPE html>
@@ -165,10 +171,13 @@
 	  // Se uma página foi especificada
       //$page = Page::find($page_slug);
       if($page) {
-      	  // Carregar a página do banco de dados
-	      echo '<div class="row"><div class="span12">';
-	      echo markdown($page->content);
-	      echo '</div></div>';
+      	if($page->page_type != 'page'){
+	      	$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'pages' . DS . $content_type->layout;
+	      	require_once($link);
+      	} else {
+	      	$link = SITE_ROOT.DS. 'themes' . DS . $settings->theme . DS . 'pages' . DS . $content_type->layout;
+	      	require_once($link);
+	    }
 	  } else {
 	  	  // Mostrar página inexistente
 		  echo '<div class="hero-unit">';
