@@ -44,6 +44,10 @@
 			$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
 			require_once($link);
 		}
+	} else {
+		$special_page = SpecialPage::find($page_slug, $parent_page->page_type);
+		//$link = back_path($level) . 'themes' . DS . $settings->theme . DS . 'pages' . DS . $special_page->file;
+		//redirect_to($link);
 	}
 
 ?>
