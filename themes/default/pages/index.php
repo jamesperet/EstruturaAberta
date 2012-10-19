@@ -38,11 +38,12 @@
 	else {
     	$level = 0;
 	}
-	
-	$content_type = ContentType::load($page->page_type);
-	if($page->page_type != 'page'){		
-		$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
-		require_once($link);
+	if($page){
+		$content_type = ContentType::load($page->page_type);
+		if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media'){		
+			$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
+			require_once($link);
+		}
 	}
 
 ?>
@@ -171,7 +172,7 @@
 	  // Se uma página foi especificada
       //$page = Page::find($page_slug);
       if($page) {
-      	if($page->page_type != 'page'){
+      	if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media'){
 	      	$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'pages' . DS . $content_type->layout;
 	      	require_once($link);
       	} else {
@@ -198,15 +199,17 @@
 	      	 
 	      		<?php
 	      			if($page){
-	      				echo '<p>Tags: ';
-		      			$page_tags = ItemTag::find($page->id, 'page');
-		      			foreach($page_tags as $item_tag){
-			      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-			      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
-			      		}
-			      		$user = User::find_by_id($page->creator_id);
-			      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
-			      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
+	      				if($page->page_type != 'tag' && $page->content != 'list_pages'){
+		      				echo '<p>Tags: ';
+			      			$page_tags = ItemTag::find($page->id, 'page');
+			      			foreach($page_tags as $item_tag){
+				      			$tag_name = Tag::find_by_id($item_tag->tag_id);
+				      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+				      		}
+				      		$user = User::find_by_id($page->creator_id);
+				      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
+				      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
+				      	}
 			      		
 		      		}
 	      			echo $settings->footer_msg;
