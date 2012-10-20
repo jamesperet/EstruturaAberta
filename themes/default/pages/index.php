@@ -40,9 +40,13 @@
 	}
 	if($page){
 		$content_type = ContentType::load($page->page_type);
-		if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media'){		
+		if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media' && $page->page_type != 'sys'){		
 			$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
 			require_once($link);
+		}
+		elseif($page->page_type == 'sys'){
+			$special_page = SpecialPage::find_by_id($page->object_id);
+			
 		}
 	} else {
 		$special_page = SpecialPage::find($page_slug, $parent_page->page_type);
@@ -67,7 +71,7 @@
     } else {
 	  // Se uma página foi especificada
       //$page = Page::find($page_slug);
-      if($page) {
+      if($page && !$special_page) {
       	if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media'){
 	      	$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'pages' . DS . $content_type->layout;
 	      	require_once($link);

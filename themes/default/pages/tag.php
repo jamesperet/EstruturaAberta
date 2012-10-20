@@ -84,18 +84,10 @@
 			  	echo '<li class="divider-vertical"></li>';
 			 }
 			  	echo '<li><form class="navbar-search pull-left method="post" action="' . back_path($level) . 'search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			    
 			    echo '<li class="divider-vertical"></li><li class="dropdown">';
-			 if($user) {
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
-			    echo '<ul class="dropdown-menu">';
-			    echo '<li><a href="' . back_path($level) . 'user_settings.php">Minhas configurações</a></li>';
-			    if($user->user_type == 'admin'){ echo '<li><a href="' . back_path($level) . 'system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
-			    echo '</ul></li>';
-			  } else {
-			  	  echo '<li class=""><a href="' . back_path($level) . 'signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="' . back_path($level) . 'login.php">Entrar</a></li>';
-			  }
+			    
+			    build_user_nav_menu($user, $level, $page_slug);
 
 			  ?>
 			</ul>

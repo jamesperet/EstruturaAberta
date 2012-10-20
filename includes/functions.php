@@ -202,4 +202,23 @@ function build_nav_menu($level, $page_slug){
   	}
 }
 
+function build_user_nav_menu($user, $level, $page_slug){
+	 if($user) {
+	    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
+	    echo '<ul class="dropdown-menu">';
+	    echo '<li><a href="' . back_path($level) . 'user_settings.php">Minhas configurações</a></li>';
+	    if($user->user_type == 'admin'){ echo '<li><a href="' . back_path($level) . 'system_settings.php">Configurações do sistema</a></li>'; }
+	    echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
+	    echo '</ul></li>';
+	  } else {
+	  	  
+	  	  echo '<li class="';
+	  	  if($page_slug == 'signup') { echo 'active'; }
+	  	  echo '"><a href="' . back_path($level) . 'signup/">Cadastro</a></li>';
+		  echo '<li class="';
+		  if($page_slug == 'login') { echo 'active'; }
+		  echo '"><a href="' . back_path($level) . 'login/">Entrar</a></li>';
+	  }
+}
+
 ?>

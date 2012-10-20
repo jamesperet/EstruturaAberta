@@ -1,10 +1,3 @@
-<?php
-	//require_once("includes/initialize.php");
-	
-	if( $session->is_logged_in() ) { redirect_to('index.php'); }
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +11,7 @@
 
     <!-- Le styles -->
     <?php
-	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     ?>
     <style type="text/css">
       body {
@@ -27,7 +20,7 @@
       }
     </style>
     <?php
-      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     ?>
     
 
@@ -53,29 +46,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
+          <?php $settings = Setting::load(); echo '<a class="brand" href="' . back_path($level) . '">' . $settings->sys_name . '</a>'; ?>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
-              <li><a href="tags.php">Tags</a></li>
-              <li><a href="media.php">Media</a></li>
-              <li class=""><a href="users.php">Usuários</a></li>
+               <?php build_nav_menu($level, $page_slug); ?>
             </ul>
             <ul class="nav pull-right">
 			  <?php
 			  
 			    echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			  	
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			  if($user) {
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
-			    echo '<ul class="dropdown-menu">';
-				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
-			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
-			    echo '</ul></li>';
-			  } else {
-			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class="active"><a href="login.php">Entrar</a></li>';
-			  }
+			  
+			  	build_user_nav_menu($user, $level, $page_slug);
 
 			  ?>
 			</ul>
@@ -87,7 +70,7 @@
     <div class="container">
 		<div class="row">
 		  <div class="span6 offset3">
-			<form class="well form-horizontal" action="process.php?action=login" method="post">
+			<form class="well form-horizontal" action="<?php echo back_path($level); ?>process.php?action=login" method="post">
 				<fieldset>
 					<legend>Entrar no sistema</legend>
 					
