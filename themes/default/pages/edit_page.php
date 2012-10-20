@@ -1,17 +1,3 @@
-<?php
-	
-	if( $session->is_logged_in() ) {
-		$user = User::find_by_id($_SESSION['user_id']);
-	} else {
-		$link = $_GET['file'] . '/'; 
-		redirect_to($link); 
-	}
-	
-	if($_GET['file']){ 
-		$page = Page::find($_GET['file']);
-	}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,7 +9,7 @@
 
     <!-- Le styles -->
     <?php
-	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     ?>
     <style type="text/css">
       body {
@@ -32,7 +18,7 @@
       }
     </style>
     <?php
-      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -57,13 +43,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
+          <?php $settings = Setting::load(); echo '<a class="brand" href="' . back_path($level) . '">' . $settings->sys_name . '</a>'; ?>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
-              <li><a href="tags.php">Tags</a></li>
-              <li><a href="media.php">Media</a></li>
-              <li class=""><a href="users.php">Usuários</a></li>
+              <?php build_nav_menu($level, $page_slug); ?>
             </ul>
             <ul class="nav pull-right">
 			  <?php
@@ -93,14 +76,14 @@
 
     <div class="row">
     	<div class="span12">
-			<form class="well" method="post" action="process.php?file=<?php echo $_GET['file'] . '&action=' . $_GET['action'] . '&parent_id=' . $_GET['parent_id'];?>">
+			<form class="well" method="post" action="process.php?file=<?php echo $page->name . '&action=' . $page_slug . '&parent_id=' . $_GET['parent_id'];?>">
 				<fieldset>
 					<legend>Editar página</legend>
 					
 					<div class="control-group">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
-			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php echo $_GET['file'];?>">
+			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php echo $page->name;?>">
 			            </div>
 			        </div>
 			        
@@ -120,7 +103,7 @@
 		
 					<div class="form-actions">
 		            	<button type="submit" class="btn btn-primary">Salvar</button>
-		            	<a class="btn" href="<?php if($_GET['file']) { echo $_GET['file'] . '/';} else { echo 'index.php';} ?>">Cancelar</a>
+		            	<a class="btn" href="../">Cancelar</a>
 		            </div>
 		            
 				</fieldset>

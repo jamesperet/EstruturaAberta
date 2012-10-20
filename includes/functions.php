@@ -192,4 +192,14 @@ function build_link($page_id) {
 	return $link;
 }
 
+function build_nav_menu($level, $page_slug){
+    $links = NavLink::find_all();
+  	foreach($links as $link){
+  		$link_page = Page::find_by_id($link->page_id);
+      	echo '<li class="'; 
+      	if($link_page->name == $page_slug) { echo 'active'; }
+      	echo '"><a href="' . back_path($level) . build_link($link->page_id) . '">' . $link->name . '</a></li>';
+  	}
+}
+
 ?>

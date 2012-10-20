@@ -5,10 +5,10 @@ require_once(LIB_PATH.DS.'database.php');
 class SpecialPage extends DatabaseObject {
 
 	protected static $table_name = "special_pages";
-	protected static $db_fields = array('id', 'name', 'file', 'plugin', 'content_type', 'fixed', 'unique');   
+	protected static $db_fields = array('id', 'name', 'file_name', 'plugin', 'content_type', 'fixed', 'unique');   
 	public $id;
 	public $name;
-	public $file;
+	public $file_name;
 	public $plugin;
 	public $content_type;
 	public $fixed;
