@@ -110,24 +110,24 @@
 			}
 			$user->update();
 			redirect_to('user_settings.php');
-		case "create":
+		case "create_page":
 			// Create Page 
-			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id']);
+			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id'], 'page');
 			$link = build_link($new_page);
 			redirect_to($link);
 			break;
 		case "edit":
 			// Edit page
-			$page = Page::find($_GET['file']);
+			$page = Page::find($_GET['file'], $_GET['parent_id']);
 			$page_tags = ItemTag::find($page->id, 'page');
 			if($page){
 				$page->name = $_POST['page_name'];
 				$page->content = $_POST['page_content'];
 				$page->update();
-				$link = $page->name . '/';
+				$link = build_link($page->id);
 			} else {
-				$page = Page::create_page($_POST['page_name'], $_POST['page_content']);
-				$link = $_POST['page_name'] . '/';
+				$page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id']);
+				$link = build_link($page);
 			}
 			$tags = explode( ',', $_POST['hiddenTagList']);
 			if($tags){
@@ -273,28 +273,41 @@
 							break;
 					}
 					$new_file = File::add_file($file_name, $file_type, $file_path);
-					$tags = explode( ',', $_POST['hiddenTagList']);
-					if($tags){
-						foreach($tags as $tag){
+					$new_page = Page::create_page($file_name, '', $_GET['parent_id'], 'media', $new_file);
+					$link = build_link($new_page);
+				} else {
+					$name_check = Page::find($_POST['filename'], $_GET['parent_id']);
+					$page = Page::find($_GET['file'], $_GET['parent_id']);
+					if(!$name_check){
+						$page->name = $_POST['filename'];
+						$page->update();
+						$media = File::find_by_id($page->object_id);
+						$media->name = $_POST['filename'];
+						$media->update();
+					}
+					$link = build_link($page->id);
+				}
+				$tags = explode( ',', $_POST['hiddenTagList']);
+				if($tags){
+					foreach($tags as $tag){
+						$dbTag = Tag::find($tag);
+						if(!$dbTag){
+							$dbTag = Tag::new_tag($tag);
 							$dbTag = Tag::find($tag);
-							if(!$dbTag){
-								$dbTag = Tag::new_tag($tag);
-								$dbTag = Tag::find($tag);
-							}
-							ItemTag::tag($new_file, $dbTag->id, 'media');
 						}
-						foreach($page_tags as $item_tag){
-							$tag_name = Tag::find_by_id($item_tag->tag_id);
-							if(!in_array($tag_name->name, $tags)){
-								$item_tag->delete();
-							}
+						ItemTag::tag($new_file, $dbTag->id, 'media');
+					}
+					foreach($page_tags as $item_tag){
+						$tag_name = Tag::find_by_id($item_tag->tag_id);
+						if(!in_array($tag_name->name, $tags)){
+							$item_tag->delete();
 						}
 					}
-					
-					$link = 'media.php?file=' . $new_file;
-					redirect_to($link);
 				}
-			}
+				
+				
+				redirect_to($link);
+			} 
 			break;
 	}
 	

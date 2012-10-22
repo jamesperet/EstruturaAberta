@@ -73,14 +73,16 @@
 				if($user) {
 				  	echo '<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i></a>';
 				    echo '<ul class="dropdown-menu">';
-				    echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&parent_id=' . $page->parent_id . '">Criar página</a></li>';
+				    echo '<li><a href="../create_page/">Criar página</a></li>';
 				    if($level < 4){
-				    	echo '<li><a href="' . back_path($level) . 'edit_page.php?action=create&parent_id=' . $page->id . '">Criar sub-página</a></li>';
+				    	echo '<li><a href="create_page/">Criar sub-página</a></li>';
 				    }
-				    echo '<li><a href="' . back_path($level) . 'upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
+				    echo '<li><a href="' . back_path($level) . 'upload/">Upload de arquivo</a></li>';
 				  	echo '</ul></li>';
-				  	echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
-				  	echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+				  	if($page->page_type == 'page' && $page->content != 'list_pages'){
+				  		echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
+				  		echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+				  	}
 				  	echo '<li class="divider-vertical"></li>';
 				}
 			  	

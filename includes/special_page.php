@@ -5,7 +5,7 @@ require_once(LIB_PATH.DS.'database.php');
 class SpecialPage extends DatabaseObject {
 
 	protected static $table_name = "special_pages";
-	protected static $db_fields = array('id', 'name', 'file_name', 'plugin', 'content_type', 'fixed', 'unique');   
+	protected static $db_fields = array('id', 'name', 'file_name', 'plugin', 'content_type', 'fixed', 'unique', 'function', 'parent');   
 	public $id;
 	public $name;
 	public $file_name;
@@ -13,13 +13,24 @@ class SpecialPage extends DatabaseObject {
 	public $content_type;
 	public $fixed;
 	public $unique;
+	public $function;
+	public $parent;
 
 
 
-	public static function find($page, $content_type) {
+	public static function find_page_by_type($page, $content_type) {
 		$sql  = "SELECT * FROM " . self::$table_name;
 		$sql .= " WHERE name='". $page . "' AND ";
 		$sql .= " content_type='". $content_type . "' AND ";
+		$sql .= " fixed='0' ";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+  
+	public static function find_page($page) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE name='". $page . "' AND ";
+		$sql .= " parent='0' AND ";
 		$sql .= " fixed='0' ";
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;

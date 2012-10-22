@@ -73,17 +73,27 @@
     </div>
 
     <div class="container">
-
+    
+    <?php $edit_action = back_path($level) . 'process.php?'; 
+    	  if($special_page->function == 'edit') { 
+    	  	$edit_action .= 'file=' . $page->name . '&';
+    	  } 
+    	  $edit_action .= 'action=' . $page_slug;
+    	  if($grand_parent_page){
+    	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
+    	  }
+    ?>
+    
     <div class="row">
     	<div class="span12">
-			<form class="well" method="post" action="process.php?file=<?php echo $page->name . '&action=' . $page_slug . '&parent_id=' . $_GET['parent_id'];?>">
+			<form class="well" method="post" action="<?php echo $edit_action ?>">
 				<fieldset>
 					<legend>Editar página</legend>
 					
 					<div class="control-group">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
-			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php echo $page->name;?>">
+			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php if($special_page->function == 'edit') { echo $page->name; }?>">
 			            </div>
 			        </div>
 			        
@@ -97,7 +107,7 @@
 					
 					<div class="control-group">
 						<label>Conteúdo</label>
-						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"><?php echo $page->content;?></textarea>
+						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"><?php if($special_page->function == 'edit') { echo $page->content; }?></textarea>
 					</div>
 
 		

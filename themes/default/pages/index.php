@@ -49,8 +49,10 @@
 			
 		}
 	} else {
-		$special_page = SpecialPage::find($page_slug, $parent_page->page_type);
-		
+		$special_page = SpecialPage::find_page_by_type($page_slug, $parent_page->page_type);
+		if(!$special_page){
+			$special_page = SpecialPage::find_page($page_slug);
+		}	
 		//echo $special_page->name;
 		//redirect_to($link);
 	}

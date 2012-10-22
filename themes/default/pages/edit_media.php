@@ -71,9 +71,19 @@
 
     <div class="container">
 
+    <?php $edit_action = back_path($level) . 'process.php?'; 
+    	  if($special_page->function == 'edit') { 
+    	  	$edit_action .= 'file=' . $page->name . '&';
+    	  } 
+    	  $edit_action .= 'action=upload';
+    	  if($grand_parent_page){
+    	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
+    	  }
+    ?>
+
     <div class="row">
     	<div class="span12">
-			<form class="well" method="post" action="<?php echo back_path($level); ?>process.php?action=upload" enctype="multipart/form-data">
+			<form class="well" method="post" action="<?php echo $edit_action; ?>" enctype="multipart/form-data">
 				<fieldset>
 					<legend>Upload de arquivo</legend>
 					<?php if($_GET['error']){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}?>
