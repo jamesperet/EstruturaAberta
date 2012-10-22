@@ -206,19 +206,40 @@ function build_user_nav_menu($user, $level, $page_slug){
 	 if($user) {
 	    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
 	    echo '<ul class="dropdown-menu">';
-	    echo '<li><a href="' . back_path($level) . 'user_settings.php">Minhas configurações</a></li>';
-	    if($user->user_type == 'admin'){ echo '<li><a href="' . back_path($level) . 'system_settings.php">Configurações do sistema</a></li>'; }
+	    
+	    // User Settings Link
+	    echo '<li class="';
+	    if($page_slug == 'user_settings') { echo 'active'; }
+	    echo '"><a href="' . back_path($level) . 'user_settings/">Minhas configurações</a></li>';
+	    
+	    // System settings Link
+	    if($user->user_type == 'admin'){ 
+	    	echo '<li class="';
+	    	if($page_slug == 'system_settings') { echo 'active'; }
+	    	echo '"><a href="' . back_path($level) . 'system_settings/">Configurações do sistema</a></li>'; 
+	    }
+	    
+	    // Log out Link 
 	    echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=logout">Sair</a></li>';
 	    echo '</ul></li>';
+	  
 	  } else {
 	  	  
+	  	  // Signup Link
 	  	  echo '<li class="';
 	  	  if($page_slug == 'signup') { echo 'active'; }
 	  	  echo '"><a href="' . back_path($level) . 'signup/">Cadastro</a></li>';
+	  	  
+	  	  // Login Link
 		  echo '<li class="';
 		  if($page_slug == 'login') { echo 'active'; }
 		  echo '"><a href="' . back_path($level) . 'login/">Entrar</a></li>';
 	  }
+}
+
+function build_search_box($level){
+	echo '<li><form class="navbar-search pull-left method="post" action="' . back_path($level);
+	echo 'search/"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 }
 
 ?>

@@ -52,8 +52,8 @@
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			    echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
-			  	
+			  	build_search_box($level);	
+			  				  	
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
 			  	
 			  	build_user_nav_menu($user, $level, $page_slug);
@@ -128,20 +128,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <?php
-      echo '<script src="themes/' . $settings->theme . '/js/jquery.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
 
   </body>

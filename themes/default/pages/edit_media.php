@@ -1,14 +1,6 @@
 <?php
-	
-	if( $session->is_logged_in() ) {
-		$user = User::find_by_id($_SESSION['user_id']);
-	} else {
-		$link = $_GET['file'] . '/'; 
-		redirect_to($link); 
-	}
-	
-	if($_GET['file']){ 
-		$page = Page::find($_GET['file']);
+	if($page->object_id){
+		$file = File::find_by_id($page->object_id);
 	}
 ?>
 
@@ -23,7 +15,7 @@
 
     <!-- Le styles -->
     <?php
-	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     ?>
     <style type="text/css">
       body {
@@ -32,7 +24,7 @@
       }
     </style>
     <?php
-      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -57,30 +49,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
+          <?php $settings = Setting::load(); echo '<a class="brand" href="' . back_path($level) . '">' . $settings->sys_name . '</a>'; ?>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
-              <li><a href="tags.php">Tags</a></li>
-              <li><a href="media.php">Media</a></li>
-              <li class=""><a href="users.php">Usuários</a></li>
+              <?php build_nav_menu($level, $page_slug); ?>
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			  if($user) {
-			  	echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
+			    build_search_box($level);
+			  
 			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			  	echo '</li><li class="dropdown">';
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
-			    echo '<ul class="dropdown-menu">';
-				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
-				if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
-			    echo '</ul></li>';
-			  } else {
-			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="login.php">Entrar</a></li>';
-			  }
+			  	
+			  	build_user_nav_menu($user, $level, $page_slug);
 
 			  ?>
 			</ul>
@@ -93,7 +73,7 @@
 
     <div class="row">
     	<div class="span12">
-			<form class="well" method="post" action="process.php?action=upload" enctype="multipart/form-data">
+			<form class="well" method="post" action="<?php echo back_path($level); ?>process.php?action=upload" enctype="multipart/form-data">
 				<fieldset>
 					<legend>Upload de arquivo</legend>
 					<?php if($_GET['error']){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}?>
@@ -108,7 +88,7 @@
 			        <div class="control-group span4">
 			            <label class="control-label" for="input01">Novo nome do arquivo</label>
 			            <div class="controls">
-			              <input type="text" name="filename" class="input-large"> 
+			              <input type="text" name="filename" class="input-large" value="<?php echo $file->name; ?>"> 
 			            </div>
 			        </div>
 			        
@@ -122,7 +102,7 @@
 		
 					<div class="form-actions">
 		            	<button type="submit" class="btn btn-primary">Enviar</button>
-		            	<a class="btn" href="<?php if($_GET['file']) { echo $_GET['file'] . '/';} else { echo 'index.php';} ?>">Cancelar</a>
+		            	<a class="btn" href="<?php echo back_path($level) . build_link($parent_page->id); ?>">Cancelar</a>
 		            </div>
 		            
 				</fieldset>
@@ -147,21 +127,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <?php
-      echo '<script src="themes/' . $settings->theme . '/js/jquery.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
+	  echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
 
     

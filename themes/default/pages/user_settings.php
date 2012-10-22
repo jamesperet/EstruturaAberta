@@ -1,10 +1,3 @@
-<?php
-	//require_once("includes/initialize.php");
-	
-	if( !$session->is_logged_in() ) { redirect_to('login.php'); }
-	$user = User::find_by_id($_SESSION['user_id']);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +11,7 @@
 
     <!-- Le styles -->
     <?php
-	  echo '<link href="themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
+	  echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap.css" rel="stylesheet">';
     ?>
     <style type="text/css">
       body {
@@ -27,7 +20,7 @@
       }
     </style>
     <?php
-      echo '<link href="themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
+      echo '<link href="' . back_path($level) . 'themes/' . $settings->theme . '/css/bootstrap-responsive.css" rel="stylesheet">';
     ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -52,30 +45,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php"><?php $settings = Setting::load(); echo $settings->sys_name; ?></a>
+          <?php $settings = Setting::load(); echo '<a class="brand" href="' . back_path($level) . '">' . $settings->sys_name . '</a>'; ?>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class=""><a href="pages.php">Páginas</a></li>
-              <li><a href="tags.php">Tags</a></li>
-              <li><a href="media.php">Media</a></li>
-              <li class=""><a href="users.php">Usuários</a></li>
+               <?php build_nav_menu($level, $page_slug); ?>
             </ul>
             <ul class="nav pull-right">
 			  <?php
 			  
-			  	echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
-			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			  if($user) {
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
-			    echo '<ul class="dropdown-menu">';
-				echo '<li class="active"><a href="user_settings.php">Minhas configurações</a></li>';
-				if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
-			    echo '</ul></li>';
-			  } else {
-			  	  echo '<li class="active"><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="login.php">Entrar</a></li>';
-			  }
+				build_search_box($level);			    
+			    
+			    echo '<li class="divider-vertical"></li><li class="dropdown">';
+			    
+			    build_user_nav_menu($user, $level, $page_slug);
 
 			  ?>
 			</ul>
@@ -140,20 +122,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <?php
-      echo '<script src="themes/' . $settings->theme . '/js/jquery.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
-      echo '<script src="themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/jquery.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-transition.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-alert.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-modal.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-dropdown.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-scrollspy.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tab.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tooltip.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-popover.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-button.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-collapse.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-carousel.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-typeahead.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
+      echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
 
   </body>

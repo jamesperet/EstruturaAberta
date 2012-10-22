@@ -79,12 +79,12 @@
 			    }
 			    echo '<li><a href="' . back_path($level) . 'upload.php?file=' . $page_slug . '">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
-			  	echo '<li><a href="' . back_path($level) . 'edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
-			  	echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+			  	//echo '<li><a href="' . back_path($level) . 'edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
+			  	//echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
 			  	echo '<li class="divider-vertical"></li>';
 			 }
-			  	echo '<li><form class="navbar-search pull-left method="post" action="' . back_path($level) . 'search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
-			    
+			  	build_search_box($level);	
+			  				    
 			    echo '<li class="divider-vertical"></li><li class="dropdown">';
 			    
 			    build_user_nav_menu($user, $level, $page_slug);
@@ -128,10 +128,14 @@
 		echo '</tbody></table>';
   	} else {
 	  	echo '<div class="page-header"><h1>Tags</h1></div>';
-	  	$all_tags = Tag::find_all();
-      	foreach($all_tags as $item_tag){
-      		$tagged_items = ItemTag::count_tags($item_tag->id);
-       		echo '<a href="pages.php?tag='. $item_tag->name .'"><span class="label label-info">' . $item_tag->name . ' (' . $tagged_items . ')</span></a> ';
+	  	//$all_tags = Tag::find_all();
+      	$all_tags = Page::find_by_type('tag');
+      	foreach($all_tags as $page_tag){
+      		if($page_tag->object_id){
+      			$item_tag = Tag::find_by_id($page_tag->object_id);
+      			$tagged_items = ItemTag::count_tags($item_tag->id);
+      			echo '<a href="'. back_path($level) . build_link($page_tag->id) .'"><span class="label label-info">' . $item_tag->name . ' (' . $tagged_items . ')</span></a> ';
+      		}
        	}
   	}
   ?>
@@ -159,20 +163,6 @@
 	      	<div class="span12">
 	      	 
 	      		<?php
-	      			if($page){
-	      				if($page->page_type != 'tag' && $page->content != 'list_pages'){
-		      				echo '<p>Tags: ';
-			      			$page_tags = ItemTag::find($page->id, 'page');
-			      			foreach($page_tags as $item_tag){
-				      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-				      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
-				      		}
-				      		$user = User::find_by_id($page->creator_id);
-				      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
-				      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
-				      	}
-			      		
-		      		}
 	      			echo $settings->footer_msg;
 	      		?>
 	      	</div>

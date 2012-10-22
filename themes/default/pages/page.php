@@ -84,8 +84,7 @@
 				  	echo '<li class="divider-vertical"></li>';
 				}
 			  	
-			  	echo '<li><form class="navbar-search pull-left method="post" action="' . back_path($level) . 'search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
-			    
+			  	build_search_box($level);			    
 			    echo '<li class="divider-vertical"></li><li class="dropdown">';
 			    
 			    build_user_nav_menu($user, $level, $page_slug);
@@ -152,15 +151,18 @@
 	      	 
 	      		<?php
 	      			if($page){
-	      				if($page->page_type != 'tag' && $page->content != 'list_pages'){
-		      				echo '<p>Tags: ';
+	      				if($page->page_type != 'tag' && !$all_media && $page->content != 'list_pages'){
 			      			$page_tags = ItemTag::find($page->id, 'page');
-			      			foreach($page_tags as $item_tag){
-				      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-				      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+			      			if($page_tags){
+				      			echo '<p>Tags: ';
+				      			foreach($page_tags as $item_tag){
+					      			$tag_name = Tag::find_by_id($item_tag->tag_id);
+					      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+					      		}
+					      		echo '| ';
 				      		}
 				      		$user = User::find_by_id($page->creator_id);
-				      		echo '| <i class="icon-user"></i> '. $user->full_name() .' ';
+				      		echo '<i class="icon-user"></i> '. $user->full_name() .' ';
 				      		echo '| <i class="icon-calendar"></i> ' . getElapsedTime($page->creation_date) . ' | ';
 				      	}
 			      		

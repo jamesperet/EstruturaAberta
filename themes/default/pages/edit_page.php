@@ -50,20 +50,20 @@
             </ul>
             <ul class="nav pull-right">
 			  <?php
-			  if($user) {
-			  	echo '<li><form class="navbar-search pull-left method="post" action="search.php"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
-			  	echo '<li class="divider-vertical"></li><li class="dropdown">';
-			  	echo '</li><li class="dropdown">';
-			    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
-			    echo '<ul class="dropdown-menu">';
-				echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
-				if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
-			    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
-			    echo '</ul></li>';
-			  } else {
-			  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
-				  echo '<li class=""><a href="login.php">Entrar</a></li>';
-			  }
+				  build_search_box($level);	
+				  if($user) {
+				  	echo '<li class="divider-vertical"></li><li class="dropdown">';
+				  	echo '</li><li class="dropdown">';
+				    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->full_name() . ' <b class="caret"></b></a>';
+				    echo '<ul class="dropdown-menu">';
+					echo '<li><a href="user_settings.php">Minhas configurações</a></li>';
+					if($user->user_type == 'admin'){ echo '<li><a href="system_settings.php">Configurações do sistema</a></li>'; }
+				    echo '<li><a href="process.php?file=' . $_GET['file'] . '&action=logout">Sair</a></li>';
+				    echo '</ul></li>';
+				  } else {
+				  	  echo '<li class=""><a href="signup.php">Cadastro</a></li>';
+					  echo '<li class=""><a href="login.php">Entrar</a></li>';
+				  }
 
 			  ?>
 			</ul>

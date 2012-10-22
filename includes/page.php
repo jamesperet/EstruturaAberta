@@ -23,6 +23,12 @@ class Page extends DatabaseObject {
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
   
+	public static function find_by_type($file_type) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE page_type='". $file_type . "' ";
+		return static::find_by_sql($sql);
+  }
+  
   	public static function create_page($file, $content, $parent_id=0){
 		$new_page = new Page();
 		$new_page->name = $file;
@@ -38,7 +44,6 @@ class Page extends DatabaseObject {
 		$result_array = self::find_by_sql($sql);
 		return static::find_by_sql($sql);
 	}
-
 
 }
 
