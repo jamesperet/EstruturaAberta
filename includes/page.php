@@ -29,7 +29,15 @@ class Page extends DatabaseObject {
 		return static::find_by_sql($sql);
   }
   
-  	public static function create_page($file, $content, $parent_id=0, $page_type, $object_id=0){
+  public static function find_by_object_id($object_id, $page_type) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE object_id='". $object_id . "' AND ";
+		$sql .= " page_type='". $page_type . "'";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+  
+  public static function create_page($file, $content, $parent_id=0, $page_type, $object_id=0){
 		$new_page = new Page();
 		$new_page->name = $file;
 		$new_page->content = $content;

@@ -136,6 +136,10 @@
 					if(!$dbTag){
 						$dbTag = Tag::new_tag($tag);
 						$dbTag = Tag::find($tag);
+						$tag_page_check = Page::find($dbTag->name, $_GET['parent_id']);
+						if(!$tag_page_check){
+							Page::create_page($dbTag->name, '', '0', 'tag', $dbTag->id);
+						}
 					}
 					ItemTag::tag($page->id, $dbTag->id, 'page');
 				}
@@ -228,7 +232,7 @@
 			if($_FILES['uploadedfile']){
 				$target_path = basename( $_FILES['uploadedfile']['name']);
 				$extension = find_file_extension($target_path);
-				if($_POST['filename']){
+				if($_POST['filename'] && $_GET['subaction'] != 'edit'){
 					$filecheck = File::name_check($_POST['filename']);
 					if($filecheck){
 						$link = 'upload.php?error=1';
@@ -286,6 +290,7 @@
 						$media->update();
 					}
 					$link = build_link($page->id);
+					$new_file = $page->id;
 				}
 				$tags = explode( ',', $_POST['hiddenTagList']);
 				if($tags){
@@ -294,6 +299,10 @@
 						if(!$dbTag){
 							$dbTag = Tag::new_tag($tag);
 							$dbTag = Tag::find($tag);
+							$tag_page_check = Page::find($dbTag->name, $_GET['parent_id']);
+							if(!$tag_page_check){
+								Page::create_page($dbTag->name, '', '0', 'tag', $dbTag->id);
+							}
 						}
 						ItemTag::tag($new_file, $dbTag->id, 'media');
 					}

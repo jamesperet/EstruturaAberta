@@ -159,7 +159,8 @@
 				      			echo '<p>Tags: ';
 				      			foreach($page_tags as $item_tag){
 					      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-					      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+					      			$tag_page = Page::find_by_object_id($tag_name->id, 'tag');
+					      			echo '<a href="' . back_path($level) . build_link($tag_page->id) .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
 					      		}
 					      		echo '| ';
 				      		}

@@ -76,6 +76,7 @@
     	  	$edit_action .= 'file=' . $page->name . '&';
     	  } 
     	  $edit_action .= 'action=upload';
+    	  $edit_action .= '&subaction=' . $special_page->function;
     	  if($grand_parent_page){
     	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
     	  }
@@ -162,13 +163,13 @@
     		 	prefilled: 
     		 	[ 
     		 		<?php
-						/*
+						
 						$page_tags = ItemTag::find($page->id, 'page');
 						foreach($page_tags as $item_tag){
 							$tag_name = Tag::find_by_id($item_tag->tag_id);
 							echo '"' . $tag_name->name . '", ';
 						}
-						*/
+						
 						
 					?>
     		 	],

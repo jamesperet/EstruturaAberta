@@ -118,11 +118,11 @@
 		foreach($pages as $page) {
 			$user = User::find_by_id($page->creator_id);
 			if($tag){
-				if(ItemTag::find_object_tag($page->id, $tag->id, 'page')){
-					echo '<tr><td><a href="' . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+				if(ItemTag::find_tagged_items($page->id, $tag->id)){
+					echo '<tr><td><a href="'. back_path($level) . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
 				}
 			} else {
-				echo '<tr><td><a href="' . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+				echo '<tr><td><a href="' . back_path($level) . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
 			}
 		}
 		echo '</tbody></table>';

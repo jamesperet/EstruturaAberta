@@ -188,12 +188,13 @@
 	      		<?php
 	      			if($page){
 	      				if($page->page_type != 'tag' && !$all_media && $page->content != 'list_pages'){
-			      			$page_tags = ItemTag::find($page->id, 'page');
+			      			$page_tags = ItemTag::find($page->id, 'media');
 			      			if($page_tags){
 				      			echo '<p>Tags: ';
 				      			foreach($page_tags as $item_tag){
-					      			$tag_name = Tag::find_by_id($item_tag->tag_id);
-					      			echo '<a href="' . back_path($level) . 'pages.php?tag=' . $tag_name->name .'"><span class="label label-info">' . $tag_name->name . "</span></a> ";
+					      			$tag = Tag::find_by_id($item_tag->tag_id);
+					      			$tag_page = Page::find_by_object_id($tag->id, 'tag');
+					      			echo '<a href="' . back_path($level) . build_link($tag_page->id) . '"><span class="label label-info">' . $tag->name . "</span></a> ";
 					      		}
 					      		echo '| ';
 				      		}
