@@ -81,7 +81,7 @@
 				  	echo '</ul></li>';
 				  	if($page->page_type == 'page' && $page->content != 'list_pages'){
 				  		echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
-				  		echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+				  		echo '<li><a href="delete/"><i class="icon-remove"></i></a></li>';
 				  	}
 				  	echo '<li class="divider-vertical"></li>';
 				}
@@ -177,6 +177,23 @@
       </footer>
 
     </div> <!-- /container -->
+    
+    
+    <!-- Modal -->
+	<div class="modal hide" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Deletar Peagina</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p>Você tem certeza que quer deletar a página <code>/<?php if($page) { echo build_link($page->id); } ?></code>?</p>
+	  </div>
+	  <div class="modal-footer">
+	    <a class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</a>
+	    <a href="<?php if($page) { echo back_path($level) . 'process.php?page_id=' . $page->id . '&level=' . $level . '&action=delete_page'; }?>" class="btn btn-danger">Deletar</a>
+	  </div>
+	</div>
+    
 
     <!-- Le javascript
     ================================================== -->
@@ -199,6 +216,14 @@
       echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
       echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
+
+    <script>
+    	$(document).ready(function() {
+    	   jQuery('#myModal').modal('<?php if($special_page->function == 'delete'){ echo 'show'; } else { echo 'hide'; } ?>');
+    	  
+    	});
+    </script>
+
 
   </body>
 </html>

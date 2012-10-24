@@ -113,7 +113,7 @@
 		
 					<div class="form-actions">
 		            	<button type="submit" class="btn btn-primary">Enviar</button>
-		            	<a class="btn" href="<?php echo back_path($level) . build_link($parent_page->id); ?>">Cancelar</a>
+		            	<?php if($special_page->function == 'edit'){ echo '<a class="btn" href="' . back_path($level) . build_link($parent_page->id) . '">Cancelar</a>'; } ?>
 		            </div>
 		            
 				</fieldset>
@@ -163,13 +163,11 @@
     		 	prefilled: 
     		 	[ 
     		 		<?php
-						
-						$page_tags = ItemTag::find($page->id, 'page');
+						$page_tags = ItemTag::find($page->id, 'media');
 						foreach($page_tags as $item_tag){
 							$tag_name = Tag::find_by_id($item_tag->tag_id);
 							echo '"' . $tag_name->name . '", ';
 						}
-						
 						
 					?>
     		 	],

@@ -81,6 +81,8 @@
     	  $edit_action .= 'action=' . $page_slug;
     	  if($grand_parent_page){
     	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
+    	  } else {
+	    	  $edit_action .= '&parent_id=0';
     	  }
     ?>
     
@@ -93,7 +95,7 @@
 					<div class="control-group">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
-			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php if($special_page->function == 'edit') { echo $page->name; }?>">
+			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php if($special_page->function != 'create') { echo $page->name; }?>">
 			            </div>
 			        </div>
 			        
@@ -107,7 +109,7 @@
 					
 					<div class="control-group">
 						<label>Conteúdo</label>
-						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"><?php if($special_page->function == 'edit') { echo $page->content; }?></textarea>
+						<textarea class="" id="textarea" name="page_content" rows="12" style="width: 99%;"><?php if($special_page->function != 'create') { echo $page->content; }?></textarea>
 					</div>
 
 		
@@ -126,13 +128,17 @@
     </div>
 
 
-      <hr>
-
-      <footer>
-       <p><?php echo $settings->footer_msg; ?></p>
-      </footer>
+	  <hr>
+	
+	  <footer>
+	   <p><?php echo $settings->footer_msg; ?></p>
+	  </footer>
+      
+      
 
     </div> <!-- /container -->
+    
+
 
     <!-- Le javascript
     ================================================== -->
@@ -184,6 +190,8 @@
 					?>
     		 	]
     		 } )
+    	   jQuery('#myModal').modal('<?php if($special_page->function == 'delete'){ echo 'show'; } else { echo 'hide'; } ?>');
+    	  
     	});
     </script>
 

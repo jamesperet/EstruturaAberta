@@ -242,4 +242,28 @@ function build_search_box($level){
 	echo 'search/"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 }
 
+function process_tags($tags_string , $page_id) {
+	$tags = explode( ',', $tags_string);
+	if($tags){
+		foreach($tags as $tag){
+			$dbTag = Tag::find($tag);
+			if(!$dbTag){
+				$dbTag = Tag::new_tag($tag);
+				$dbTag = Tag::find($tag);
+				$tag_page_check = Page::find($dbTag->name, 0);
+				if(!$tag_page_check){
+					Page::create_page($dbTag->name, '', '0', 'tag', $dbTag->id);
+				}
+			}
+			ItemTag::tag($page_id, $dbTag->id, 'page');
+		}
+		foreach($page_tags as $item_tag){
+			$tag_name = Tag::find_by_id($item_tag->tag_id);
+			if(!in_array($tag_name->name, $tags)){
+				$item_tag->delete();
+			}
+		}
+	}
+}
+
 ?>

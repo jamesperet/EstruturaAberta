@@ -112,7 +112,8 @@
 			redirect_to('user_settings.php');
 		case "create_page":
 			// Create Page 
-			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id'], 'page');
+			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id'], 'page', 0);
+			process_tags($_POST['hiddenTagList'], $new_page);
 			$link = build_link($new_page);
 			redirect_to($link);
 			break;
@@ -152,11 +153,20 @@
 			}
 			redirect_to($link);
 			break;
-		case "delete":
+		case "delete_page":
 			// Delete page
-			$page = Page::find($_GET['file']);
+			$page = Page::find_by_id($_GET['page_id']);
+			$parent = $page->parent_id;
 			$page->delete();
-			$link = $_GET['file'] . '/';
+			if($parent == 0){
+				$settings = Setting::load();
+				$root = Page::find($settings->initial_page, 0);
+				$level = $_GET['level'];
+				$level = $level - 1;
+				$link = build_link($root->id);
+			} else {
+				$link = build_link($parent);
+			}
 			redirect_to($link);
 			break;
 		case "update_sys_info":
@@ -279,6 +289,7 @@
 					$new_file = File::add_file($file_name, $file_type, $file_path);
 					$new_page = Page::create_page($file_name, '', $_GET['parent_id'], 'media', $new_file);
 					$link = build_link($new_page);
+					$new_file = $new_page;
 				} else {
 					$name_check = Page::find($_POST['filename'], $_GET['parent_id']);
 					$page = Page::find($_GET['file'], $_GET['parent_id']);
@@ -291,9 +302,18 @@
 					}
 					$link = build_link($page->id);
 					$new_file = $page->id;
-				}
+					$page_tags = ItemTag::find($page->id, 'media');
+				}				
 				$tags = explode( ',', $_POST['hiddenTagList']);
 				if($tags){
+					if($page_tags){
+						foreach($page_tags as $item_tag){
+							$tag_name = Tag::find_by_id($item_tag->tag_id);
+							if(!in_array($tag_name->name, $tags)){
+								$item_tag->delete();
+							}
+						}
+					}
 					foreach($tags as $tag){
 						$dbTag = Tag::find($tag);
 						if(!$dbTag){
@@ -305,12 +325,6 @@
 							}
 						}
 						ItemTag::tag($new_file, $dbTag->id, 'media');
-					}
-					foreach($page_tags as $item_tag){
-						$tag_name = Tag::find_by_id($item_tag->tag_id);
-						if(!in_array($tag_name->name, $tags)){
-							$item_tag->delete();
-						}
 					}
 				}
 				
