@@ -35,6 +35,15 @@ class SpecialPage extends DatabaseObject {
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
+
+  public static function content_type($page_type) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE content_type='". $page_type . "' AND ";
+		$sql .= " function='default'";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+
  
 /* 
   	public static function create_page($file, $content, $parent_id=0){

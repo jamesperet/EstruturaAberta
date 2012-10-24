@@ -38,7 +38,6 @@ if(!$config_handle){
 	require_once(LIB_PATH.DS.'database_object.php');
 	require_once(LIB_PATH.DS.'setting.php');
 	require_once(LIB_PATH.DS.'user.php');
-	require_once(LIB_PATH.DS.'content_type.php');
 	
 	// load database-related classes	
 	require_once(LIB_PATH.DS.'page.php');

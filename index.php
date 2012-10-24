@@ -42,8 +42,9 @@
 	else {
     	$level = 0;
 	}
+	
 	if($page){
-		$content_type = ContentType::load($page->page_type);
+		$content_type = SpecialPage::content_type($page->page_type);
 		if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media' && $page->page_type != 'sys'){		
 			$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'includes' . DS . 'ini.php';
 			require_once($link);
@@ -75,10 +76,10 @@
       //$page = Page::find($page_slug);
       if($page && !$special_page) {
       	if($page->page_type != 'page' && $page->page_type != 'tag' && $page->page_type != 'media'){
-	      	$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'pages' . DS . $content_type->layout;
+	      	$link = SITE_ROOT.DS. 'plugins' . DS . $content_type->plugin . DS . 'pages' . DS . $content_type->file_name;
 	      	require_once($link);
       	} else {
-	      	$link = SITE_ROOT.DS. 'themes' . DS . $settings->theme . DS . 'pages' . DS . $content_type->layout;
+	      	$link = SITE_ROOT.DS. 'themes' . DS . $settings->theme . DS . 'pages' . DS . $content_type->file_name;
 	      	require_once($link);
 	    }
 	  } else {
