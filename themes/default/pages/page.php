@@ -119,7 +119,7 @@
     } else { 			
 		echo '<div class="page-header"><h1>Lista de páginas</h1></div>';
 		echo '<table class="table table-bordered"><tbody><thead><tr><th>Página</th><th>Autor</th><th>data</th></tr></thead>';				
-		$pages = Page::find_all();
+		$pages = Page::find_by_type('page');
 			foreach($pages as $page) {
 				$user = User::find_by_id($page->creator_id);
 				if($_GET['tag']){

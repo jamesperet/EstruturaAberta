@@ -112,6 +112,13 @@
 			redirect_to('user_settings.php');
 		case "create_page":
 			// Create Page 
+			if(!$_POST['page_name']){
+				$link = build_link($_GET['parent_id']) . 'create_page/?error=1';
+				redirect_to($link);
+			} elseif(Page::find($_POST['page_name'], $_GET['parent_id'])){
+				$link = build_link($_GET['parent_id']) . 'create_page/?error=2';
+				redirect_to($link);
+			}
 			$new_page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id'], 'page', 1);
 			process_tags($_POST['hiddenTagList'], $new_page, 'page');
 			$link = build_link($new_page);

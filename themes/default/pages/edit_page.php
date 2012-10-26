@@ -79,11 +79,19 @@
     	  	$edit_action .= 'file=' . $page->name . '&';
     	  } 
     	  $edit_action .= 'action=' . $page_slug;
-    	  if($grand_parent_page){
-    	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
+    	  if($special_page->function == 'edit') {
+	    	  if($grand_parent_page){
+	    	  	$edit_action .= '&parent_id=' . $grand_parent_page->id;
+	    	  } else {
+		    	  $edit_action .= '&parent_id=0';
+	    	  }
     	  } else {
-	    	  $edit_action .= '&parent_id=0';
-    	  }
+	    	  if($parent_page){
+	    	  	$edit_action .= '&parent_id=' . $parent_page->id;
+	    	  } else {
+		    	  $edit_action .= '&parent_id=0';
+	    	  }
+	      }
     ?>
     
     <div class="row">
@@ -92,10 +100,11 @@
 				<fieldset>
 					<legend>Editar página</legend>
 					
-					<div class="control-group">
+					<div class="control-group  <?php if($_GET['error']==1 || $_GET['error']==2){ echo 'error'; } ?>">
 			            <label class="control-label" for="input01">Nome da Página</label>
 			            <div class="controls">
 			              <input type="text" name="page_name" class="input-xlarge" id="input01" value="<?php if($special_page->function != 'create') { echo $page->name; }?>">
+			              <span class="help-inline"><?php if($_GET['error']==1){ echo 'escreva um nome para a página'; } if($_GET['error']==2){ echo 'já existe uma página com esse nome neste nivel.'; } ?></span>
 			            </div>
 			        </div>
 			        
@@ -169,7 +178,9 @@
     		 	prefilled: 
     		 	[ 
     		 		<?php
-						$page_tags = ItemTag::find($page->id, 'page');
+    		 			if($special_page->function == 'edit') {
+							$page_tags = ItemTag::find($page->id, 'page');
+						}
 						foreach($page_tags as $item_tag){
 							$tag_name = Tag::find_by_id($item_tag->tag_id);
 							echo '"' . $tag_name->name . '", ';
