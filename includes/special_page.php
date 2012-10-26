@@ -43,6 +43,24 @@ class SpecialPage extends DatabaseObject {
 		$result_array = self::find_by_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
+  
+  public static function list_page($page_type) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE content_type='". $page_type . "' AND ";
+		$sql .= " function='list'";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+  
+  public static function master_page($page_type) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE content_type='". $page_type . "' AND ";
+		$sql .= " name='master'";
+		$result_array = self::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+  
+  
 
  
 /* 

@@ -111,7 +111,7 @@
 
 
 <?php
-	if($page->page_type == 'page' && $page->content != 'list_pages'){
+	if($page->object_id != 0){
   	  // Carregar a página do banco de dados
       echo '<div class="row"><div class="span12">';
       echo markdown($page->content);

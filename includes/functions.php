@@ -242,7 +242,7 @@ function build_search_box($level){
 	echo 'search/"><input name="query" type="text" class="input-small search-query" placeholder="Busca"></form></li>';
 }
 
-function process_tags($tags_string , $page_id) {
+function process_tags($tags_string , $page_id, $content_type) {
 	$tags = explode( ',', $tags_string);
 	if($tags){
 		foreach($tags as $tag){
@@ -252,10 +252,16 @@ function process_tags($tags_string , $page_id) {
 				$dbTag = Tag::find($tag);
 				$tag_page_check = Page::find($dbTag->name, 0);
 				if(!$tag_page_check){
-					Page::create_page($dbTag->name, '', '0', 'tag', $dbTag->id);
+					$master = SpecialPage::master_page('tag');
+					if($master) { 
+						$parent = $master->function; 
+					} else { 
+						$parent = 0; 
+					}
+					Page::create_page($dbTag->name, '', $parent, 'tag', $dbTag->id);
 				}
 			}
-			ItemTag::tag($page_id, $dbTag->id, 'page');
+			ItemTag::tag($page_id, $dbTag->id, $content_type);
 		}
 		foreach($page_tags as $item_tag){
 			$tag_name = Tag::find_by_id($item_tag->tag_id);
