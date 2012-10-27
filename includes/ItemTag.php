@@ -42,6 +42,12 @@ class ItemTag extends DatabaseObject {
 		return static::find_by_sql($sql);
 	}
 	
+	public static function find_by_tag($tag_id) {
+		$sql  = "SELECT * FROM " . static::$table_name . " WHERE `tag_id`='" . $tag_id . "'";
+		$result_array = self::find_by_sql($sql);
+		return static::find_by_sql($sql);
+	}
+	
 	public static function count_tags($tag_id){
 		$sql  = "SELECT * FROM " . static::$table_name . " WHERE `tag_id`='" . $tag_id . "'";
 		$result_array = static::find_by_sql($sql);

@@ -76,8 +76,19 @@
 			    echo '<li><a href="' . back_path($level) . 'create_page/">Criar página</a></li>';
 			    echo '<li><a href="' . back_path($level) . 'upload/">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
-			  	//echo '<li><a href="' . back_path($level) . 'edit_page.php?file=' . $page_slug . '&action=edit""><i class="icon-pencil"></i></a></li>';
-			  	//echo '<li><a href="' . back_path($level) . 'process.php?file=' . $page_slug . '&action=delete"><i class="icon-remove"></i></a></li>';
+			  	if($page->object_id){ 
+			  	    if($special_page->function == 'edit') { 
+			  	    	echo '<li><a href="#edit_modal" data-toggle="modal"><i class="icon-pencil"></i></a></li>';
+			  	    	echo '<li><a href="../delete/"><i class="icon-remove"></i></a></li>'; 
+			  	    } 
+			  	    elseif($special_page->function == 'delete') {
+			  	    	echo '<li><a href="../edit/"><i class="icon-pencil"></i></a></li>'; 
+			  	    	echo '<li><a href="#delete_modal" data-toggle="modal"><i class="icon-remove"></i></a></li>'; 
+			  	    } else {
+			  	    	echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
+				  	    echo '<li><a href="delete/"><i class="icon-remove"></i></a></li>'; 
+			  	    }
+			  	}
 			  	echo '<li class="divider-vertical"></li>';
 			 }
 			  	build_search_box($level);	
@@ -93,7 +104,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container"><div class="row"><div class="span12">
 
 
 
@@ -112,14 +123,14 @@
   		echo '<div class="page-header"><h1>' . $tag->name . ' <small>Páginas taggeadas</small></h1></div>';
   		echo '<table class="table table-bordered"><tbody><thead><tr><th>Página</th><th>Autor</th><th>data</th></tr></thead>';
   		$pages = Page::find_all();
-		foreach($pages as $page) {
-			$user = User::find_by_id($page->creator_id);
+		foreach($pages as $object) {
+			$user = User::find_by_id($object->creator_id);
 			if($tag){
-				if(ItemTag::find_tagged_items($page->id, $tag->id)){
-					echo '<tr><td><a href="'. back_path($level) . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+				if(ItemTag::find_tagged_items($object->id, $tag->id)){
+					echo '<tr><td><a href="'. back_path($level) . build_link($object->id) . '">' . $object->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($object->creation_date) .'</tr>';
 				}
 			} else {
-				echo '<tr><td><a href="' . back_path($level) . build_link($page->id) . '">' . $page->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($page->creation_date) .'</tr>';
+				echo '<tr><td><a href="' . back_path($level) . build_link($object->id) . '">' . $object->name . '</a></td><td>' . $user->full_name() .'</td><td>' . getElapsedTime($object->creation_date) .'</tr>';
 			}
 		}
 		echo '</tbody></table>';
@@ -127,13 +138,17 @@
 	  	echo '<div class="page-header"><h1>Tags</h1></div>';
 	  	//$all_tags = Tag::find_all();
       	$all_tags = Page::find_by_type('tag');
-      	foreach($all_tags as $page_tag){
-      		if($page_tag->object_id){
-      			$item_tag = Tag::find_by_id($page_tag->object_id);
-      			$tagged_items = ItemTag::count_tags($item_tag->id);
-      			echo '<a href="'. back_path($level) . build_link($page_tag->id) .'"><span class="label label-info">' . $item_tag->name . ' (' . $tagged_items . ')</span></a> ';
-      		}
-       	}
+      	if($all_tags){
+	      	foreach($all_tags as $page_tag){
+	      		if($page_tag->object_id){
+	      			$item_tag = Tag::find_by_id($page_tag->object_id);
+	      			$tagged_items = ItemTag::count_tags($item_tag->id);
+	      			echo '<a href="'. back_path($level) . build_link($page_tag->id) .'"><span class="label label-info">' . $item_tag->name . ' (' . $tagged_items . ')</span></a> ';
+	      		}
+	       	}
+	   } else {
+		   echo '<i>Nenhuma Tag no sistema...</i>';
+	   }
   	}
   ?>
   
@@ -167,6 +182,54 @@
       </footer>
 
     </div> <!-- /container -->
+    
+    
+    
+    
+    <!-- Modal -->
+	<div class="modal hide" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Deletar Tag</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p>Você tem certeza que quer deletar a tag <code><?php if($page) { echo $tag->name; } ?></code>?</p>
+	  </div>
+	  <div class="modal-footer">
+	    <a class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</a>
+	    <a href="<?php if($page) { echo back_path($level) . 'process.php?page_id=' . $page->id . '&level=' . $level . '&action=delete_tag'; }?>" class="btn btn-danger">Deletar</a>
+	  </div>
+	</div>
+    
+    <!-- Modal -->
+	<div class="modal hide" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <form class="form-horizontal" action="<?php echo back_path($level) . 'process.php?action=edit_tag&page_id=' . $page->id ; ?>" method="post" style="margin-bottom: 0;">	  
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Editar Tag</h3>
+	  </div>
+	  <div class="modal-body">					
+		<fieldset>
+			<div class="control-group <?php if($_GET['error']==1 || $_GET['error']==2){ echo 'error'; } ?>">
+			  <label class="control-label" for="input01">Nome da tag</label>
+			  <div class="controls">
+			  	<input type="text" name="tag_name" class="input-large" placeholder="" value="<?php  $tag = Tag::find_by_id($page->object_id); echo $tag->name; ?>">
+			  	<span class="help-inline"><?php if($_GET['error']==1){ echo 'essa tag já existe'; } if($_GET['error']==2){ echo 'favor inserir um valor'; } ?></span>
+			  </div>
+			</div>
+		</fieldset>
+	  </div>			  
+	  <div class="modal-footer">
+	    <a class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</a>
+	    <button type="submit" class="btn btn-primary">Salvar</button>
+	  </div>
+	  
+	
+	</form> 
+	</div>    
+    
+    
+    
 
     <!-- Le javascript
     ================================================== -->
@@ -189,6 +252,16 @@
       echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/google-code-prettify/prettify.js"></script>';
       echo '<script src="' . back_path($level) . 'themes/' . $settings->theme . '/js/bootstrap-tagmanager.js"></script>';
     ?>
+
+    <script>
+    	$(document).ready(function() {
+    	   jQuery('#delete_modal').modal('<?php if($special_page->function == 'delete'){ echo 'show'; } else { echo 'hide'; } ?>');
+    	   jQuery('#edit_modal').modal('<?php if($special_page->function == 'edit'){ echo 'show'; } else { echo 'hide'; } ?>');
+    	  
+    	});
+    </script>
+
+
 
   </body>
 </html>

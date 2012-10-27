@@ -250,14 +250,14 @@ function process_tags($tags_string , $page_id, $content_type) {
 			if(!$dbTag){
 				$dbTag = Tag::new_tag($tag);
 				$dbTag = Tag::find($tag);
-				$tag_page_check = Page::find($dbTag->name, 0);
+				$master = SpecialPage::master_page('tag');
+				if($master) { 
+					$parent = $master->function; 
+				} else { 
+					$parent = 0; 
+				}
+				$tag_page_check = Page::find($dbTag->name, $parent);
 				if(!$tag_page_check){
-					$master = SpecialPage::master_page('tag');
-					if($master) { 
-						$parent = $master->function; 
-					} else { 
-						$parent = 0; 
-					}
 					if($dbTag->name) {
 						Page::create_page($dbTag->name, '', $parent, 'tag', $dbTag->id);
 					}
@@ -273,5 +273,13 @@ function process_tags($tags_string , $page_id, $content_type) {
 		}
 	}
 }
+
+function delete_item_tags($page_id, $content_type) {
+	$tags = ItemTag::find($page_id, $content_type);
+	foreach($tags as $tag){
+		$tag->delete();
+	}
+}
+
 
 ?>

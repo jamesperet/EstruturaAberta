@@ -137,13 +137,14 @@
 				$page = Page::create_page($_POST['page_name'], $_POST['page_content'], $_GET['parent_id'], 'page', 1);
 				$link = build_link($page);
 			}
-			process_tags($_POST['hiddenTagList'], $new_page, 'page');
+			process_tags($_POST['hiddenTagList'], $page->id, 'page');
 			redirect_to($link);
 			break;
 		case "delete_page":
 			// Delete page
 			$page = Page::find_by_id($_GET['page_id']);
 			$parent = $page->parent_id;
+			delete_item_tags($page->id, $page->page_type);
 			$page->delete();
 			if($parent == 0){
 				$settings = Setting::load();
@@ -252,7 +253,6 @@
 						$file_path = 'uploads/' . $file_name . '.' . $extension;
 						if($_GET['subaction'] == 'edit'){
 							$page = Page::find_by_id($_GET['page_id']);
-							$parent = $page->parent_id;
 							$media = File::find_by_id($page->object_id);
 							unlink($media->file_path);
 						}
@@ -318,8 +318,33 @@
 				
 				redirect_to($link);
 			} else {
-				$link = 'upload/?error=1';
-				redirect_to($link);
+				if($_GET['subaction'] == 'edit'){
+					if($_POST['filename']){
+						$page = Page::find_by_id($_GET['page_id']);
+						$media = File::find_by_id($page->object_id);
+						if(!File::name_check($_POST['filename'])){
+							$media->name = $_POST['filename'];
+							$media->update();
+							$page->name = $_POST['filename'];
+							$page->update();
+							$link = build_link($page->id);
+							process_tags($_POST['hiddenTagList'], $page->id, 'media');
+							redirect_to($link);
+						} elseif($media->name == $_POST['filename']) {
+							$link = build_link($page->id);
+							process_tags($_POST['hiddenTagList'], $page->id, 'media');
+							redirect_to($link);
+						} else {
+							$link = 'upload/?error=2';
+							redirect_to($link);
+						}
+						
+						
+					}
+				} else {
+					$link = 'upload/?error=1';
+					redirect_to($link);
+				}
 			} 
 			break;
 		case "delete_media":
@@ -337,6 +362,46 @@
 				$link = build_link($root->id);
 			} else {
 				$link = build_link($parent);
+			}
+			redirect_to($link);
+			break;
+		case "delete_tag":
+			// Delete tag
+			$page = Page::find_by_id($_GET['page_id']);
+			$parent = $page->parent_id;
+			$tag = Tag::find_by_id($page->object_id);
+			$tagged_items = ItemTag::find_by_tag($tag->id);
+			foreach($tagged_items as $item){
+				$item->delete();
+			}
+			$tag->delete();
+			delete_item_tags($page->id, $page->page_type);
+			$page->delete();
+			if($parent == 0){
+				$settings = Setting::load();
+				$root = Page::find($settings->initial_page, 0);
+				$level = $_GET['level'];
+				$level = $level - 1;
+				$link = build_link($root->id);
+			} else {
+				$link = build_link($parent);
+			}
+			redirect_to($link);
+			break;
+		case "edit_tag":
+			// Edit page
+			$page = Page::find_by_id($_GET['page_id']);
+			$tag = Tag::find_by_id($page->object_id);
+			if($_POST['tag_name']){
+				if(Tag::find($_POST['tag_name'])){
+					$link = build_link($page->id) . 'edit/?error=1';
+				} else {
+					$tag->name = $_POST['tag_name'];
+					$tag->update();
+					$link = build_link($page->id);
+				}
+			} else {
+				$link = build_link($page->id) . 'edit/?error=2';
 			}
 			redirect_to($link);
 			break;

@@ -25,7 +25,8 @@ class Page extends DatabaseObject {
   
 	public static function find_by_type($file_type) {
 		$sql  = "SELECT * FROM " . self::$table_name;
-		$sql .= " WHERE page_type='". $file_type . "' ";
+		$sql .= " WHERE page_type='". $file_type . "' AND ";
+		$sql .= " object_id != 0 ";
 		return static::find_by_sql($sql);
   }
   
