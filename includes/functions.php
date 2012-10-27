@@ -258,7 +258,9 @@ function process_tags($tags_string , $page_id, $content_type) {
 					} else { 
 						$parent = 0; 
 					}
-					Page::create_page($dbTag->name, '', $parent, 'tag', $dbTag->id);
+					if($dbTag->name) {
+						Page::create_page($dbTag->name, '', $parent, 'tag', $dbTag->id);
+					}
 				}
 			}
 			ItemTag::tag($page_id, $dbTag->id, $content_type);

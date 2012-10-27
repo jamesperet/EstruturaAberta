@@ -183,7 +183,7 @@
 	<div class="modal hide" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel">Deletar Peagina</h3>
+	    <h3 id="myModalLabel">Deletar Página</h3>
 	  </div>
 	  <div class="modal-body">
 	    <p>Você tem certeza que quer deletar a página <code>/<?php if($page) { echo build_link($page->id); } ?></code>?</p>

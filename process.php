@@ -226,13 +226,13 @@
 			redirect_to('system_settings.php?error=49');
 			break;
 		case "upload":
-			if($_FILES['uploadedfile']){
+			if($_FILES['uploadedfile']['name']){
 				$target_path = basename( $_FILES['uploadedfile']['name']);
 				$extension = find_file_extension($target_path);
 				if($_POST['filename'] && $_GET['subaction'] != 'edit'){
 					$filecheck = File::name_check($_POST['filename']);
 					if($filecheck){
-						$link = 'upload.php?error=1';
+						$link = 'upload.php?error=2';
 						redirect_to($link);
 					} else { 
 						$file_name = $_POST['filename'];
@@ -241,11 +241,21 @@
 				} else {
 					$filecheck = File::name_check($_FILES['uploadedfile']['name']);
 					if($filecheck){
-						$link = 'upload.php?error=2';
+						$link = 'upload/?error=2';
 						redirect_to($link);
 					} else { 
-						$file_name = $_FILES['uploadedfile']['name'];
+						if($_POST['filename']){
+							$file_name = $_POST['filename'];
+						} else {
+							$file_name = $_FILES['uploadedfile']['name'];
+						}
 						$file_path = 'uploads/' . $file_name . '.' . $extension;
+						if($_GET['subaction'] == 'edit'){
+							$page = Page::find_by_id($_GET['page_id']);
+							$parent = $page->parent_id;
+							$media = File::find_by_id($page->object_id);
+							unlink($media->file_path);
+						}
 					}
 				}				
 				if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){					
@@ -280,7 +290,13 @@
 					} else { 
 						$parent = 0; 
 					}
-					$new_page = Page::create_page($file_name, '', $parent, 'media', $new_file);
+					if(!$page){
+						$new_page = Page::create_page($file_name, '', $parent, 'media', $new_file);
+					} else {
+						$page->object_id = $new_file;
+						$page->update();
+						$new_page = $page->id;
+					}
 					$link = build_link($new_page);
 					$new_file = $new_page;
 				} else {
@@ -301,7 +317,28 @@
 				
 				
 				redirect_to($link);
+			} else {
+				$link = 'upload/?error=1';
+				redirect_to($link);
 			} 
+			break;
+		case "delete_media":
+			$page = Page::find_by_id($_GET['page_id']);
+			$parent = $page->parent_id;
+			$media = File::find_by_id($page->object_id);
+			unlink($media->file_path);
+			$media->delete();
+			$page->delete();
+			if($parent == 0){
+				$settings = Setting::load();
+				$root = Page::find($settings->initial_page, 0);
+				$level = $_GET['level'];
+				$level = $level - 1;
+				$link = build_link($root->id);
+			} else {
+				$link = build_link($parent);
+			}
+			redirect_to($link);
 			break;
 	}
 	

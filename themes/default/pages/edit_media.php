@@ -73,7 +73,7 @@
 
     <?php $edit_action = back_path($level) . 'process.php?'; 
     	  if($special_page->function == 'edit') { 
-    	  	$edit_action .= 'file=' . $page->name . '&';
+    	  	$edit_action .= 'page_id=' . $page->id . '&';
     	  } 
     	  $edit_action .= 'action=upload';
     	  $edit_action .= '&subaction=' . $special_page->function;
@@ -87,7 +87,10 @@
 			<form class="well" method="post" action="<?php echo $edit_action; ?>" enctype="multipart/form-data">
 				<fieldset>
 					<legend>Upload de arquivo</legend>
-					<?php if($_GET['error']){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}?>
+					<?php 
+						if($_GET['error'] == 1){ echo '<div class="alert alert-error">Erro! Escolha um arquivo.</div>';}
+						if($_GET['error'] == 2){ echo '<div class="alert alert-error">Erro! Um arquivo já existe com esse nome.</div>';}
+					?>
 					<div class="row">
 					<div class="control-group span3">
 			            <label class="control-label" for="input01">Escolha um arquivo</label>
