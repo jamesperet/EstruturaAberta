@@ -76,9 +76,14 @@
 			    echo '<li><a href="' . back_path($level) . 'create_page/">Criar página</a></li>';
 			    echo '<li><a href="' . back_path($level) . 'upload/">Upload de arquivo</a></li>';
 			  	echo '</ul></li>';
-			  	if($page->object_id){
-			  		echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
-			  		echo '<li><a href="delete/"><i class="icon-remove"></i></a></li>';
+			  	if($page->object_id){ 
+			  	    if($special_page->function == 'delete') {
+			  	    	echo '<li><a href="../edit/"><i class="icon-pencil"></i></a></li>'; 
+			  	    	echo '<li><a href="#myModal" data-toggle="modal"><i class="icon-remove"></i></a></li>'; 
+			  	    } else {
+			  	    	echo '<li><a href="edit/"><i class="icon-pencil"></i></a></li>';
+				  	    echo '<li><a href="delete/"><i class="icon-remove"></i></a></li>'; 
+			  	    }
 			  	}
 			  	
 			  	echo '<li class="divider-vertical"></li>';
